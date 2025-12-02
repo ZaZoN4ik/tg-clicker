@@ -356,814 +356,935 @@
 </head>
 <body>
 
-    <div class="hero-panel">
-        <div class="hero-stats-left">
-            <div class="hero-lvl">
-                LVL <span id="heroLvlText">1</span>
-                <span id="spAlert" class="stat-points-alert" style="display:none">(+<span id="spCount">0</span> SP)</span>
-            </div>
-
-            <div class="damage-display">
-                <div class="dmg-row click-dmg">
-                    <span>⚔️</span> <span id="clickDmgText">0</span>
-                </div>
-                <div class="dmg-row idle-dps">
-                    <span>⚡</span> <span id="idleDpsText">0</span> / сек
-                </div>
-            </div>
+<div class="hero-panel">
+    <div class="hero-stats-left">
+        <div class="hero-lvl">
+            LVL <span id="heroLvlText">1</span>
+            <span id="spAlert" class="stat-points-alert" style="display:none">(+<span id="spCount">0</span> SP)</span>
         </div>
 
-        <div class="hero-stats-right">
-            <div class="currency-row gold-val"><span id="gold">0</span> 💰</div>
-            <div class="currency-row essence-val"><span id="essence">0</span> 💎</div>
-        </div>
-        <div class="xp-container"><div class="xp-bar" id="xpBar"></div></div>
-    </div>
-
-    <div id="saveStatus">✅ Сохранено</div>
-
-    <div class="arena" id="arena">
-        <div class="stage-nav">
-            <button class="nav-btn" id="prevStageBtn" onclick="changeStage(-1)">❮</button>
-            <div class="stage-info">
-                <div class="stage-title">УРОВЕНЬ</div>
-                <div class="stage-number" id="stageNum">1</div>
+        <div class="damage-display">
+            <div class="dmg-row click-dmg">
+                <span>⚔️</span> <span id="clickDmgText">0</span>
             </div>
-            <button class="nav-btn" id="nextStageBtn" onclick="changeStage(1)">❯</button>
-        </div>
-
-        <div class="monster-counter"><span id="monsterCounter">1 / 10</span></div>
-
-        <div class="monster-container">
-            <div class="monster-name-display" id="monsterNameDisplay">...</div>
-
-            <div class="hp-bar-container">
-                <div class="hp-bar" id="hpBar"></div>
-                <div class="hp-text" id="hpText">...</div>
+            <div class="dmg-row idle-dps">
+                <span>⚡</span> <span id="idleDpsText">0</span> / сек
             </div>
-
-            <div class="monster-sprite" id="monster" onpointerdown="attack(event)">👾</div>
         </div>
     </div>
 
-    <div class="controls">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="openTab('hero')">Герой</button>
-            <button class="tab-btn" onclick="openTab('skills')">Навыки</button>
-            <button class="tab-btn" onclick="openTab('allies')">Армия</button>
-            <button class="tab-btn" onclick="openTab('workshop')">Мастерская</button>
-            <button class="tab-btn" style="color:var(--essence-color)" onclick="openTab('relics')">Реликвии</button>
+    <div class="hero-stats-right">
+        <div class="currency-row gold-val"><span id="gold">0</span> 💰</div>
+        <div class="currency-row essence-val"><span id="essence">0</span> 💎</div>
+    </div>
+    <div class="xp-container">
+        <div class="xp-bar" id="xpBar"></div>
+    </div>
+</div>
+
+<div id="saveStatus">✅ Сохранено</div>
+
+<div class="arena" id="arena">
+    <div class="stage-nav">
+        <button class="nav-btn" id="prevStageBtn" onclick="changeStage(-1)">❮</button>
+        <div class="stage-info">
+            <div class="stage-title">УРОВЕНЬ</div>
+            <div class="stage-number" id="stageNum">1</div>
+        </div>
+        <button class="nav-btn" id="nextStageBtn" onclick="changeStage(1)">❯</button>
+    </div>
+
+    <div class="monster-counter"><span id="monsterCounter">1 / 10</span></div>
+
+    <div class="monster-container">
+        <div class="monster-name-display" id="monsterNameDisplay">...</div>
+
+        <div class="hp-bar-container">
+            <div class="hp-bar" id="hpBar"></div>
+            <div class="hp-text" id="hpText">...</div>
         </div>
 
-        <div id="tab-hero" class="tab-content active">
+        <div class="monster-sprite" id="monster" onpointerdown="attack(event)">👾</div>
+    </div>
+</div>
 
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div style="font-size:10px; color:#ff453a">СИЛА</div>
-                    <div class="stat-val-text" id="statStr">0</div>
-                    <button class="stat-btn" onclick="buyAttribute('str')">+1</button>
-                    <div style="font-size:9px; color:#888; margin-top:2px">+1% Урона</div>
-                </div>
-                <div class="stat-box">
-                    <div style="font-size:10px; color:#30d158">ЛОВКОСТЬ</div>
-                    <div class="stat-val-text" id="statAgi">0</div>
-                    <button class="stat-btn" onclick="buyAttribute('agi')">+1</button>
-                    <div style="font-size:9px; color:#888; margin-top:2px">+0.5% Крит</div>
-                </div>
-                <div class="stat-box">
-                    <div style="font-size:10px; color:#ffd60a">УДАЧА</div>
-                    <div class="stat-val-text" id="statLuk">0</div>
-                    <button class="stat-btn" onclick="buyAttribute('luk')">+1</button>
-                    <div style="font-size:9px; color:#888; margin-top:2px">+1% Золота</div>
-                </div>
+<div class="controls">
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('hero')">Герой</button>
+        <button class="tab-btn" onclick="openTab('skills')">Навыки</button>
+        <button class="tab-btn" onclick="openTab('allies')">Армия</button>
+        <button class="tab-btn" onclick="openTab('workshop')">Мастерская</button>
+        <button class="tab-btn" style="color:var(--essence-color)" onclick="openTab('relics')">Реликвии</button>
+        <button class="tab-btn" onclick="openTab('settings')">⚙️</button>
+    </div>
+
+    <div id="tab-hero" class="tab-content active">
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div style="font-size:10px; color:#ff453a">СИЛА</div>
+                <div class="stat-val-text" id="statStr">0</div>
+                <button class="stat-btn" onclick="buyAttribute('str')">+1</button>
+                <div style="font-size:9px; color:#888; margin-top:2px">+1% Урона</div>
             </div>
-            <div style="text-align:center; font-size:12px; margin-bottom:15px; color:#888">
-                Доступно очков: <span id="freeSp" style="color:white; font-weight:bold">0</span>
+            <div class="stat-box">
+                <div style="font-size:10px; color:#30d158">ЛОВКОСТЬ</div>
+                <div class="stat-val-text" id="statAgi">0</div>
+                <button class="stat-btn" onclick="buyAttribute('agi')">+1</button>
+                <div style="font-size:9px; color:#888; margin-top:2px">+0.5% Крит</div>
             </div>
-
-            <hr style="border:0; border-top:1px solid #333; margin-bottom:15px;">
-            <div style="margin-bottom:10px; font-weight:bold; color:var(--accent)">🎒 ЭКИПИРОВКА</div>
-
-            <div class="equip-grid">
-                <div class="equip-slot">
-                    <div class="equip-icon">🪖</div>
-                    <div class="equip-data">
-                        <h4>Голова</h4>
-                        <div class="equip-name" id="eqName_head">Нет</div>
-                        <div class="equip-bonus" id="eqBonus_head">+0% XP</div>
-                    </div>
-                    <button class="equip-btn" id="btnEq_head" onclick="upgradeEquipment('head')">UP</button>
-                </div>
-                <div class="equip-slot">
-                    <div class="equip-icon">👕</div>
-                    <div class="equip-data">
-                        <h4>Грудь</h4>
-                        <div class="equip-name" id="eqName_chest">Нет</div>
-                        <div class="equip-bonus" id="eqBonus_chest">+0% Gold</div>
-                    </div>
-                    <button class="equip-btn" id="btnEq_chest" onclick="upgradeEquipment('chest')">UP</button>
-                </div>
-                 <div class="equip-slot">
-                    <div class="equip-icon">⚔️</div>
-                    <div class="equip-data">
-                        <h4>Оружие</h4>
-                        <div class="equip-name" id="eqName_weapon">Нет</div>
-                        <div class="equip-bonus" id="eqBonus_weapon">x1 Dmg</div>
-                    </div>
-                    <button class="equip-btn" id="btnEq_weapon" onclick="upgradeEquipment('weapon')">UP</button>
-                </div>
-                <div class="equip-slot">
-                    <div class="equip-icon">🛡️</div>
-                    <div class="equip-data">
-                        <h4>Щит</h4>
-                        <div class="equip-name" id="eqName_shield">Нет</div>
-                        <div class="equip-bonus" id="eqBonus_shield">+0% Boss</div>
-                    </div>
-                    <button class="equip-btn" id="btnEq_shield" onclick="upgradeEquipment('shield')">UP</button>
-                </div>
-                <div class="equip-slot">
-                    <div class="equip-icon">👖</div>
-                    <div class="equip-data">
-                        <h4>Штаны</h4>
-                        <div class="equip-name" id="eqName_legs">Нет</div>
-                        <div class="equip-bonus" id="eqBonus_legs">+0% Ess</div>
-                    </div>
-                    <button class="equip-btn" id="btnEq_legs" onclick="upgradeEquipment('legs')">UP</button>
-                </div>
-                <div class="equip-slot">
-                    <div class="equip-icon">👢</div>
-                    <div class="equip-data">
-                        <h4>Сапоги</h4>
-                        <div class="equip-name" id="eqName_boots">Нет</div>
-                        <div class="equip-bonus" id="eqBonus_boots">+0% Crit</div>
-                    </div>
-                    <button class="equip-btn" id="btnEq_boots" onclick="upgradeEquipment('boots')">UP</button>
-                </div>
+            <div class="stat-box">
+                <div style="font-size:10px; color:#ffd60a">УДАЧА</div>
+                <div class="stat-val-text" id="statLuk">0</div>
+                <button class="stat-btn" onclick="buyAttribute('luk')">+1</button>
+                <div style="font-size:9px; color:#888; margin-top:2px">+1% Золота</div>
             </div>
         </div>
-
-        <div id="tab-skills" class="tab-content">
-            <div class="upgrade-card">
-                <div class="upgrade-info"><h4>⚔️ Базовая Атака</h4><p>Урон: <span id="dmgVal">1</span></p></div>
-                <button class="buy-btn" id="btnBuyDmg" onclick="upgrade('damage')">10</button>
-            </div>
-            <div class="upgrade-card">
-                <div class="upgrade-info"><h4>🎯 Меткость</h4><p>Шанс крита: <span id="critVal">0</span>%</p></div>
-                <button class="buy-btn" id="btnBuyCrit" onclick="upgrade('crit')">50</button>
-            </div>
-            <div class="upgrade-card">
-                <div class="upgrade-info"><h4>🩸 Жестокость</h4><p>Крит. урон: x<span id="critMultiVal">2.0</span></p></div>
-                <button class="buy-btn" id="btnBuyFerocity" onclick="upgrade('ferocity')">200</button>
-            </div>
-            <div class="upgrade-card">
-                <div class="upgrade-info"><h4>⚡ Двойной удар</h4><p>Шанс: <span id="doubleStrikeVal">0</span>%</p></div>
-                <button class="buy-btn" id="btnBuyDouble" onclick="upgrade('doubleStrike')">2K</button>
-            </div>
+        <div style="text-align:center; font-size:12px; margin-bottom:15px; color:#888">
+            Доступно очков: <span id="freeSp" style="color:white; font-weight:bold">0</span>
         </div>
 
-        <div id="tab-allies" class="tab-content">
-            <div id="alliesList"></div>
-        </div>
+        <hr style="border:0; border-top:1px solid #333; margin-bottom:15px;">
+        <div style="margin-bottom:10px; font-weight:bold; color:var(--accent)">🎒 ЭКИПИРОВКА</div>
 
-        <div id="tab-workshop" class="tab-content">
-            <div id="workshopList"></div>
-        </div>
-
-        <div id="tab-relics" class="tab-content">
-            <div style="padding:10px; text-align:center; color:var(--essence-color); font-size:12px;">Эссенция падает только с Боссов!</div>
-            <div id="relicsList"></div>
+        <div class="equip-grid">
+            <div class="equip-slot">
+                <div class="equip-icon">🪖</div>
+                <div class="equip-data">
+                    <h4>Голова</h4>
+                    <div class="equip-name" id="eqName_head">Нет</div>
+                    <div class="equip-bonus" id="eqBonus_head">+0% XP</div>
+                </div>
+                <button class="equip-btn" id="btnEq_head" onclick="upgradeEquipment('head')">UP</button>
+            </div>
+            <div class="equip-slot">
+                <div class="equip-icon">👕</div>
+                <div class="equip-data">
+                    <h4>Грудь</h4>
+                    <div class="equip-name" id="eqName_chest">Нет</div>
+                    <div class="equip-bonus" id="eqBonus_chest">+0% Gold</div>
+                </div>
+                <button class="equip-btn" id="btnEq_chest" onclick="upgradeEquipment('chest')">UP</button>
+            </div>
+            <div class="equip-slot">
+                <div class="equip-icon">⚔️</div>
+                <div class="equip-data">
+                    <h4>Оружие</h4>
+                    <div class="equip-name" id="eqName_weapon">Нет</div>
+                    <div class="equip-bonus" id="eqBonus_weapon">x1 Dmg</div>
+                </div>
+                <button class="equip-btn" id="btnEq_weapon" onclick="upgradeEquipment('weapon')">UP</button>
+            </div>
+            <div class="equip-slot">
+                <div class="equip-icon">🛡️</div>
+                <div class="equip-data">
+                    <h4>Щит</h4>
+                    <div class="equip-name" id="eqName_shield">Нет</div>
+                    <div class="equip-bonus" id="eqBonus_shield">+0% Boss</div>
+                </div>
+                <button class="equip-btn" id="btnEq_shield" onclick="upgradeEquipment('shield')">UP</button>
+            </div>
+            <div class="equip-slot">
+                <div class="equip-icon">👖</div>
+                <div class="equip-data">
+                    <h4>Штаны</h4>
+                    <div class="equip-name" id="eqName_legs">Нет</div>
+                    <div class="equip-bonus" id="eqBonus_legs">+0% Ess</div>
+                </div>
+                <button class="equip-btn" id="btnEq_legs" onclick="upgradeEquipment('legs')">UP</button>
+            </div>
+            <div class="equip-slot">
+                <div class="equip-icon">👢</div>
+                <div class="equip-data">
+                    <h4>Сапоги</h4>
+                    <div class="equip-name" id="eqName_boots">Нет</div>
+                    <div class="equip-bonus" id="eqBonus_boots">+0% Crit</div>
+                </div>
+                <button class="equip-btn" id="btnEq_boots" onclick="upgradeEquipment('boots')">UP</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+    <div id="tab-skills" class="tab-content">
+        <div class="upgrade-card">
+            <div class="upgrade-info"><h4>⚔️ Базовая Атака</h4>
+                <p>Урон: <span id="dmgVal">1</span></p></div>
+            <button class="buy-btn" id="btnBuyDmg" onclick="upgrade('damage')">10</button>
+        </div>
+        <div class="upgrade-card">
+            <div class="upgrade-info"><h4>🎯 Меткость</h4>
+                <p>Шанс крита: <span id="critVal">0</span>%</p></div>
+            <button class="buy-btn" id="btnBuyCrit" onclick="upgrade('crit')">50</button>
+        </div>
+        <div class="upgrade-card">
+            <div class="upgrade-info"><h4>🩸 Жестокость</h4>
+                <p>Крит. урон: x<span id="critMultiVal">2.0</span></p></div>
+            <button class="buy-btn" id="btnBuyFerocity" onclick="upgrade('ferocity')">200</button>
+        </div>
+        <div class="upgrade-card">
+            <div class="upgrade-info"><h4>⚡ Двойной удар</h4>
+                <p>Шанс: <span id="doubleStrikeVal">0</span>%</p></div>
+            <button class="buy-btn" id="btnBuyDouble" onclick="upgrade('doubleStrike')">2K</button>
+        </div>
+    </div>
 
-        // === CONFIG ===
-        const initialState = {
-            gold: 0,
-            essence: 0,
-            level: 1,
-            xp: 0,
-            xpToNext: 150, // Harder start
-            statPoints: 0, // NEW
+    <div id="tab-allies" class="tab-content">
+        <div id="alliesList"></div>
+    </div>
 
-            stage: 1,
-            maxStage: 1,
-            killsInStage: 0,
+    <div id="tab-workshop" class="tab-content">
+        <div id="workshopList"></div>
+    </div>
 
-            // Attributes (NEW)
-            attributes: {
-                str: 0, // +1% Damage
-                agi: 0, // +0.5% Crit Chance
-                luk: 0  // +1% Gold Drop
-            },
+    <div id="tab-relics" class="tab-content">
+        <div style="padding:10px; text-align:center; color:var(--essence-color); font-size:12px;">Эссенция падает только
+            с Боссов!
+        </div>
+        <div id="relicsList"></div>
+    </div>
 
-            // Equipment (NEW)
-            // Levels: 0=None, 1=Broken, 2=Common, 3=Uncommon, 4=Rare, 5=Epic, 6=Legendary
-            equipment: {
-                head: 0,   // XP Bonus
-                chest: 0,  // Gold Bonus
-                legs: 0,   // Essence Chance
-                boots: 0,  // Crit Chance
-                weapon: 0, // Click Dmg Mult
-                shield: 0  // Boss Dmg Mult
-            },
+    <div id="tab-settings" class="tab-content">
+        <div class="upgrade-card" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+            <div class="upgrade-info" style="width: 100%;">
+                <h4>🎁 Промокод</h4>
+                <p>Введите код, полученный в боте (/donate)</p>
+            </div>
+            <div style="display: flex; width: 100%; gap: 5px;">
+                <input type="text" id="promoInput" placeholder="GOLD-1000..."
+                       style="flex:1; padding: 8px; border-radius: 8px; border: 1px solid #444; background: #222; color: white;">
+                <button class="buy-btn" onclick="activatePromo()">OK</button>
+            </div>
+            <p id="promoStatus" style="font-size: 11px; color: #ff453a; margin: 0;"></p>
+        </div>
 
-            stats: {
-                damage: 1,
-                critChance: 0,
-                critMulti: 2.0,
-                goldBonus: 0,
-                doubleStrike: 0,
-                luckyStrike: 0
-            },
+        <div style="margin-top: 20px; text-align: center;">
+            <p style="font-size: 10px; color: #666;">ID: <span id="userId">User</span></p>
+            <button class="buy-btn" style="background: #e74c3c;" onclick="resetProgress()">Сброс прогресса</button>
+        </div>
+    </div>
 
-            allies: {
-                archer: { lvl: 0, dpsBase: 5, cost: 100, name: "Лучник" },
-                mage: { lvl: 0, dpsBase: 25, cost: 600, name: "Маг Огня" },
-                knight: { lvl: 0, dpsBase: 100, cost: 3000, name: "Рыцарь" },
-                warlock: { lvl: 0, dpsBase: 500, cost: 20000, name: "Некромант" },
-                titan: { lvl: 0, dpsBase: 2500, cost: 150000, name: "Титан" },
-                angel: { lvl: 0, dpsBase: 10000, cost: 1000000, name: "Ангел" },
-                zeus: { lvl: 0, dpsBase: 50000, cost: 50000000, name: "Зевс" }
-            },
+</div>
 
-            workshop: {
-                archerBoost: { level: 0, multi: 0.2, cost: 1500, name: "Лучники" },
-                mageBoost: { level: 0, multi: 0.2, cost: 7000, name: "Маги" },
-                knightBoost: { level: 0, multi: 0.2, cost: 30000, name: "Рыцари" },
-                warlockBoost: { level: 0, multi: 0.2, cost: 150000, name: "Некроманты" },
-                titanBoost: { level: 0, multi: 0.2, cost: 800000, name: "Титаны" },
-                angelBoost: { level: 0, multi: 0.2, cost: 5000000, name: "Ангелы" },
-                zeusBoost: { level: 0, multi: 0.2, cost: 200000000, name: "Боги" },
-                bossSlayer: { level: 0, multi: 0.1, cost: 15000, name: "Убийца Боссов" }
-            },
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-            relics: {
-                titanSword: { level: 0, multi: 0.1, cost: 1, name: "Меч Титана" },
-                goldHorn: { level: 0, multi: 0.1, cost: 1, name: "Рог Изобилия" },
-                fatalStrike: { level: 0, chance: 1, cost: 5, name: "Око Бездны" },
-                wisdomOrb: { level: 0, multi: 0.1, cost: 2, name: "Книга Мудрости" },
-                soulPrism: { level: 0, chance: 1, cost: 5, name: "Призма Души" }
-            },
+    // === CONFIG ===
+    const initialState = {
+        gold: 0,
+        essence: 0,
+        level: 1,
+        xp: 0,
+        xpToNext: 150, // Harder start
+        statPoints: 0, // NEW
 
-            costs: {
-                damage: 10,
-                crit: 50,
-                ferocity: 200,
-                greed: 500,
-                doubleStrike: 2000,
-                luckyStrike: 3000
-            },
+        stage: 1,
+        maxStage: 1,
+        killsInStage: 0,
 
-            monster: { hp: 20, maxHp: 20, type: 0, prefix: 0, isBoss: false }
-        };
+        // Attributes (NEW)
+        attributes: {
+            str: 0, // +1% Damage
+            agi: 0, // +0.5% Crit Chance
+            luk: 0  // +1% Gold Drop
+        },
 
-        const equipNames = ["Нет", "Ветхий", "Обычный", "Редкий", "Эпический", "Легендарный", "Мифический", "Божественный"];
-        // Costs for equipment upgrades: [Gold, Essence]
-        const equipCosts = [
-            {g: 1000, e: 0}, {g: 5000, e: 1}, {g: 25000, e: 5}, {g: 100000, e: 10},
-            {g: 500000, e: 25}, {g: 2500000, e: 50}, {g: 10000000, e: 100}
-        ];
+        // Equipment (NEW)
+        // Levels: 0=None, 1=Broken, 2=Common, 3=Uncommon, 4=Rare, 5=Epic, 6=Legendary
+        equipment: {
+            head: 0,   // XP Bonus
+            chest: 0,  // Gold Bonus
+            legs: 0,   // Essence Chance
+            boots: 0,  // Crit Chance
+            weapon: 0, // Click Dmg Mult
+            shield: 0  // Boss Dmg Mult
+        },
 
-        let game = JSON.parse(JSON.stringify(initialState));
-        let isCloudLoading = true;
+        stats: {
+            damage: 1,
+            critChance: 0,
+            critMulti: 2.0,
+            goldBonus: 0,
+            doubleStrike: 0,
+            luckyStrike: 0
+        },
 
-        const monsters = ["Слайм", "Гоблин", "Скелет", "Призрак", "Орк", "Волк", "Вампир", "Зомби"];
-        const bosses = ["Дракон", "Кракен", "Демон", "Гигант", "Лич", "Титан"];
-        const monsterEmojis = ["👾", "👺", "💀", "👻", "👹", "🐺", "🧛", "🧟"];
-        const bossEmojis = ["🐲", "🐙", "👿", "🗿", "🧙‍♂️", "🦍"];
+        allies: {
+            archer: { lvl: 0, dpsBase: 5, cost: 100, name: "Лучник" },
+            mage: { lvl: 0, dpsBase: 25, cost: 600, name: "Маг Огня" },
+            knight: { lvl: 0, dpsBase: 100, cost: 3000, name: "Рыцарь" },
+            warlock: { lvl: 0, dpsBase: 500, cost: 20000, name: "Некромант" },
+            titan: { lvl: 0, dpsBase: 2500, cost: 150000, name: "Титан" },
+            angel: { lvl: 0, dpsBase: 10000, cost: 1000000, name: "Ангел" },
+            zeus: { lvl: 0, dpsBase: 50000, cost: 50000000, name: "Зевс" }
+        },
 
-        // === INIT & SAVE ===
-        function initGame() {
-            tg.CloudStorage.getItem('rpg_save_v9_equip', (err, value) => {
-                if (!err && value) {
+        workshop: {
+            archerBoost: { level: 0, multi: 0.2, cost: 1500, name: "Лучники" },
+            mageBoost: { level: 0, multi: 0.2, cost: 7000, name: "Маги" },
+            knightBoost: { level: 0, multi: 0.2, cost: 30000, name: "Рыцари" },
+            warlockBoost: { level: 0, multi: 0.2, cost: 150000, name: "Некроманты" },
+            titanBoost: { level: 0, multi: 0.2, cost: 800000, name: "Титаны" },
+            angelBoost: { level: 0, multi: 0.2, cost: 5000000, name: "Ангелы" },
+            zeusBoost: { level: 0, multi: 0.2, cost: 200000000, name: "Боги" },
+            bossSlayer: { level: 0, multi: 0.1, cost: 15000, name: "Убийца Боссов" }
+        },
+
+        relics: {
+            titanSword: { level: 0, multi: 0.1, cost: 1, name: "Меч Титана" },
+            goldHorn: { level: 0, multi: 0.1, cost: 1, name: "Рог Изобилия" },
+            fatalStrike: { level: 0, chance: 1, cost: 5, name: "Око Бездны" },
+            wisdomOrb: { level: 0, multi: 0.1, cost: 2, name: "Книга Мудрости" },
+            soulPrism: { level: 0, chance: 1, cost: 5, name: "Призма Души" }
+        },
+
+        costs: {
+            damage: 10,
+            crit: 50,
+            ferocity: 200,
+            greed: 500,
+            doubleStrike: 2000,
+            luckyStrike: 3000
+        },
+
+        monster: { hp: 20, maxHp: 20, type: 0, prefix: 0, isBoss: false }
+    };
+
+    const equipNames = ["Нет", "Ветхий", "Обычный", "Редкий", "Эпический", "Легендарный", "Мифический", "Божественный"];
+    // Costs for equipment upgrades: [Gold, Essence]
+    const equipCosts = [
+        {g: 1000, e: 0}, {g: 5000, e: 1}, {g: 25000, e: 5}, {g: 100000, e: 10},
+        {g: 500000, e: 25}, {g: 2500000, e: 50}, {g: 10000000, e: 100}
+    ];
+
+    let game = JSON.parse(JSON.stringify(initialState));
+    let isCloudLoading = true;
+
+    const monsters = ["Слайм", "Гоблин", "Скелет", "Призрак", "Орк", "Волк", "Вампир", "Зомби"];
+    const bosses = ["Дракон", "Кракен", "Демон", "Гигант", "Лич", "Титан"];
+    const monsterEmojis = ["👾", "👺", "💀", "👻", "👹", "🐺", "🧛", "🧟"];
+    const bossEmojis = ["🐲", "🐙", "👿", "🗿", "🧙‍♂️", "🦍"];
+
+    // === INIT & SAVE ===
+    function initGame() {
+        tg.CloudStorage.getItem('rpg_save_v9_equip', (err, value) => {
+            if (!err && value) {
+                try {
+                    const parsed = JSON.parse(value);
+                    mergeData(game, parsed);
+                } catch (e) { console.error(e); }
+            } else {
+                const oldSave = localStorage.getItem('rpg_save_v8_mega');
+                if (oldSave) {
                     try {
-                        const parsed = JSON.parse(value);
-                        mergeData(game, parsed);
-                    } catch (e) { console.error(e); }
-                } else {
-                    const oldSave = localStorage.getItem('rpg_save_v8_mega');
-                    if (oldSave) {
-                        try {
-                            const parsedOld = JSON.parse(oldSave);
-                            mergeData(game, parsedOld);
-                        } catch(e) {}
-                    }
-                }
-                isCloudLoading = false;
-                renderUI();
-                renderLists();
-                spawnMonster(false);
-            });
-        }
-
-        function mergeData(target, source) {
-            for (const key in source) {
-                if (source[key] instanceof Object && key in target) {
-                    Object.assign(source[key], mergeData(target[key], source[key]));
+                        const parsedOld = JSON.parse(oldSave);
+                        mergeData(game, parsedOld);
+                    } catch(e) {}
                 }
             }
-            Object.assign(target || {}, source);
-            return target;
-        }
-
-        function saveGame() {
-            if (isCloudLoading) return;
-            const dataStr = JSON.stringify(game);
-            localStorage.setItem('rpg_save_v9_equip', dataStr);
-            tg.CloudStorage.setItem('rpg_save_v9_equip', dataStr, (err, stored) => {
-                if (!err && stored) showSaveStatus();
-            });
-        }
-
-        function showSaveStatus() {
-            const el = document.getElementById('saveStatus');
-            el.style.opacity = 1;
-            setTimeout(() => el.style.opacity = 0, 2000);
-        }
-        setInterval(saveGame, 60000);
-
-        // === CALCULATION LOGIC ===
-
-        function getAttrDmg() { return 1 + (game.attributes.str * 0.01); }
-        function getAttrCrit() { return game.attributes.agi * 0.5; }
-        function getAttrGold() { return 1 + (game.attributes.luk * 0.01); }
-
-        function getEquipBonuses() {
-            return {
-                xp: 1 + (game.equipment.head * 0.1), // +10% per level
-                gold: 1 + (game.equipment.chest * 0.1),
-                essence: (game.equipment.legs * 0.5), // +0.5% chance per level
-                crit: (game.equipment.boots * 1), // +1% per level
-                click: 1 + (game.equipment.weapon * 0.2), // +20% click dmg
-                boss: 1 + (game.equipment.shield * 0.15) // +15% boss dmg
-            };
-        }
-
-        function getGlobalDamageMulti() {
-            return (1 + (game.relics.titanSword.level * game.relics.titanSword.multi)) * getAttrDmg();
-        }
-
-        function getGlobalGoldMulti() {
-            const eq = getEquipBonuses();
-            return (1 + (game.relics.goldHorn.level * game.relics.goldHorn.multi)) * getAttrGold() * eq.gold;
-        }
-
-        function getAllyDps(type) {
-            const ally = game.allies[type];
-            let dps = ally.lvl * ally.dpsBase;
-            const techKey = type + 'Boost';
-            if (game.workshop[techKey]) {
-                dps *= (1 + (game.workshop[techKey].level * game.workshop[techKey].multi));
-            }
-            dps *= getGlobalDamageMulti();
-            return dps;
-        }
-
-        function calculateTotalDps() {
-            let total = 0;
-            for (let key in game.allies) total += getAllyDps(key);
-            return total;
-        }
-
-        function getHeroClickDamage() {
-            let dmg = game.stats.damage;
-            const eq = getEquipBonuses();
-            if (game.monster.isBoss) {
-                dmg *= (1 + (game.workshop.bossSlayer.level * game.workshop.bossSlayer.multi)) * eq.boss;
-            }
-            dmg *= getGlobalDamageMulti() * eq.click;
-            return dmg;
-        }
-
-        function getTotalCritChance() {
-            const eq = getEquipBonuses();
-            return game.stats.critChance + getAttrCrit() + eq.crit;
-        }
-
-        // === GAME LOOP ===
-        setInterval(() => {
-            if (isCloudLoading) return;
-            const dps = calculateTotalDps();
-            if (dps > 0 && game.monster.hp > 0) dealDamage(dps / 10, false, false);
-        }, 100);
-
-        function attack(e) {
-            if (isCloudLoading || game.monster.hp <= 0) return;
-
-            let damage = getHeroClickDamage();
-            let critChance = getTotalCritChance();
-            let isCrit = Math.random() * 100 < critChance;
-            let isFatal = false;
-            let isDouble = (Math.random() * 100 < game.stats.doubleStrike);
-
-            if (!isCrit && Math.random() * 100 < (game.relics.fatalStrike.level * game.relics.fatalStrike.chance)) {
-                damage *= 10;
-                isFatal = true;
-            }
-
-            if (isCrit) damage = Math.floor(damage * game.stats.critMulti);
-
-            const rect = e.target.getBoundingClientRect();
-            const x = e.clientX || (rect.left + rect.width/2);
-            const y = e.clientY || (rect.top + rect.height/2);
-
-            if (isFatal) tg.HapticFeedback.notificationOccurred('warning');
-            else tg.HapticFeedback.impactOccurred(isCrit ? 'medium' : 'light');
-
-            dealDamage(damage, true, isCrit, x, y, isFatal);
-
-            if (isDouble && game.monster.hp > 0) {
-                setTimeout(() => dealDamage(damage, true, isCrit, x + 20, y - 20, isFatal), 80);
-            }
-        }
-
-        function dealDamage(amount, isClick, isCrit, x, y, isFatal) {
-            game.monster.hp -= amount;
-            if (isClick) {
-                let type = isFatal ? 'essence-text' : (isCrit ? 'crit' : 'damage');
-                let text = formatNumber(Math.floor(amount));
-                if (isFatal) text = "☠️ " + text;
-                showFloatingText(x, y, text, type);
-                animateMonsterHit();
-            }
-            if (game.monster.hp <= 0) {
-                game.monster.hp = 0;
-                killMonster();
-            }
+            isCloudLoading = false;
             renderUI();
+            renderLists();
+            spawnMonster(false);
+        });
+    }
+
+    function mergeData(target, source) {
+        for (const key in source) {
+            if (source[key] instanceof Object && key in target) {
+                Object.assign(source[key], mergeData(target[key], source[key]));
+            }
+        }
+        Object.assign(target || {}, source);
+        return target;
+    }
+
+    function saveGame() {
+        if (isCloudLoading) return;
+        const dataStr = JSON.stringify(game);
+        localStorage.setItem('rpg_save_v9_equip', dataStr);
+        tg.CloudStorage.setItem('rpg_save_v9_equip', dataStr, (err, stored) => {
+            if (!err && stored) showSaveStatus();
+        });
+    }
+
+    function showSaveStatus() {
+        const el = document.getElementById('saveStatus');
+        el.style.opacity = 1;
+        setTimeout(() => el.style.opacity = 0, 2000);
+    }
+    setInterval(saveGame, 60000);
+
+    // === CALCULATION LOGIC ===
+
+    function getAttrDmg() { return 1 + (game.attributes.str * 0.01); }
+    function getAttrCrit() { return game.attributes.agi * 0.5; }
+    function getAttrGold() { return 1 + (game.attributes.luk * 0.01); }
+
+    function getEquipBonuses() {
+        return {
+            xp: 1 + (game.equipment.head * 0.1), // +10% per level
+            gold: 1 + (game.equipment.chest * 0.1),
+            essence: (game.equipment.legs * 0.5), // +0.5% chance per level
+            crit: (game.equipment.boots * 1), // +1% per level
+            click: 1 + (game.equipment.weapon * 0.2), // +20% click dmg
+            boss: 1 + (game.equipment.shield * 0.15) // +15% boss dmg
+        };
+    }
+
+    function getGlobalDamageMulti() {
+        return (1 + (game.relics.titanSword.level * game.relics.titanSword.multi)) * getAttrDmg();
+    }
+
+    function getGlobalGoldMulti() {
+        const eq = getEquipBonuses();
+        return (1 + (game.relics.goldHorn.level * game.relics.goldHorn.multi)) * getAttrGold() * eq.gold;
+    }
+
+    function getAllyDps(type) {
+        const ally = game.allies[type];
+        let dps = ally.lvl * ally.dpsBase;
+        const techKey = type + 'Boost';
+        if (game.workshop[techKey]) {
+            dps *= (1 + (game.workshop[techKey].level * game.workshop[techKey].multi));
+        }
+        dps *= getGlobalDamageMulti();
+        return dps;
+    }
+
+    function calculateTotalDps() {
+        let total = 0;
+        for (let key in game.allies) total += getAllyDps(key);
+        return total;
+    }
+
+    function getHeroClickDamage() {
+        let dmg = game.stats.damage;
+        const eq = getEquipBonuses();
+        if (game.monster.isBoss) {
+            dmg *= (1 + (game.workshop.bossSlayer.level * game.workshop.bossSlayer.multi)) * eq.boss;
+        }
+        dmg *= getGlobalDamageMulti() * eq.click;
+        return dmg;
+    }
+
+    function getTotalCritChance() {
+        const eq = getEquipBonuses();
+        return game.stats.critChance + getAttrCrit() + eq.crit;
+    }
+
+    // === GAME LOOP ===
+    setInterval(() => {
+        if (isCloudLoading) return;
+        const dps = calculateTotalDps();
+        if (dps > 0 && game.monster.hp > 0) dealDamage(dps / 10, false, false);
+    }, 100);
+
+    function attack(e) {
+        if (isCloudLoading || game.monster.hp <= 0) return;
+
+        let damage = getHeroClickDamage();
+        let critChance = getTotalCritChance();
+        let isCrit = Math.random() * 100 < critChance;
+        let isFatal = false;
+        let isDouble = (Math.random() * 100 < game.stats.doubleStrike);
+
+        if (!isCrit && Math.random() * 100 < (game.relics.fatalStrike.level * game.relics.fatalStrike.chance)) {
+            damage *= 10;
+            isFatal = true;
         }
 
-        function killMonster() {
-            tg.HapticFeedback.notificationOccurred('success');
+        if (isCrit) damage = Math.floor(damage * game.stats.critMulti);
 
-            let baseGold = 5 * Math.pow(1.6, game.stage - 1); // Increased difficulty scaling
-            if (game.monster.isBoss) baseGold *= 10;
+        const rect = e.target.getBoundingClientRect();
+        const x = e.clientX || (rect.left + rect.width/2);
+        const y = e.clientY || (rect.top + rect.height/2);
 
-            let bonusMulti = (1 + (game.stats.goldBonus / 100)) * getGlobalGoldMulti();
-            if (Math.random() * 100 < game.stats.luckyStrike) bonusMulti *= 2;
+        if (isFatal) tg.HapticFeedback.notificationOccurred('warning');
+        else tg.HapticFeedback.impactOccurred(isCrit ? 'medium' : 'light');
 
-            let finalGold = Math.floor(baseGold * bonusMulti);
-            game.gold += finalGold;
+        dealDamage(damage, true, isCrit, x, y, isFatal);
 
-            let essenceDrop = 0;
-            const eq = getEquipBonuses();
+        if (isDouble && game.monster.hp > 0) {
+            setTimeout(() => dealDamage(damage, true, isCrit, x + 20, y - 20, isFatal), 80);
+        }
+    }
+
+    function dealDamage(amount, isClick, isCrit, x, y, isFatal) {
+        game.monster.hp -= amount;
+        if (isClick) {
+            let type = isFatal ? 'essence-text' : (isCrit ? 'crit' : 'damage');
+            let text = formatNumber(Math.floor(amount));
+            if (isFatal) text = "☠️ " + text;
+            showFloatingText(x, y, text, type);
+            animateMonsterHit();
+        }
+        if (game.monster.hp <= 0) {
+            game.monster.hp = 0;
+            killMonster();
+        }
+        renderUI();
+    }
+
+    function killMonster() {
+        tg.HapticFeedback.notificationOccurred('success');
+
+        let baseGold = 5 * Math.pow(1.6, game.stage - 1); // Increased difficulty scaling
+        if (game.monster.isBoss) baseGold *= 10;
+
+        let bonusMulti = (1 + (game.stats.goldBonus / 100)) * getGlobalGoldMulti();
+        if (Math.random() * 100 < game.stats.luckyStrike) bonusMulti *= 2;
+
+        let finalGold = Math.floor(baseGold * bonusMulti);
+        game.gold += finalGold;
+
+        let essenceDrop = 0;
+        const eq = getEquipBonuses();
+        if (game.monster.isBoss) {
+            essenceDrop = 1;
+            if (game.stage % 10 === 0) essenceDrop += 1;
+            if (Math.random() * 100 < (game.relics.soulPrism.level * game.relics.soulPrism.chance + eq.essence)) {
+                essenceDrop += 1;
+            }
+            game.essence += essenceDrop;
+        }
+
+        // XP
+        let xpReward = (15 + (game.stage * 4)) * (1 + (game.relics.wisdomOrb.level * game.relics.wisdomOrb.multi)) * eq.xp;
+        gainXp(Math.floor(xpReward));
+
+        showFloatingText(window.innerWidth/2, window.innerHeight/2-100, `+${formatNumber(finalGold)}💰`, 'reward');
+        if (essenceDrop > 0) setTimeout(() => showFloatingText(window.innerWidth/2, window.innerHeight/2-140, `+${essenceDrop}💎`, 'essence-text'), 200);
+
+        const m = document.getElementById('monster');
+        m.classList.add('dead');
+        setTimeout(() => {
+            m.classList.remove('dead');
             if (game.monster.isBoss) {
-                essenceDrop = 1;
-                if (game.stage % 10 === 0) essenceDrop += 1;
-                if (Math.random() * 100 < (game.relics.soulPrism.level * game.relics.soulPrism.chance + eq.essence)) {
-                    essenceDrop += 1;
-                }
-                game.essence += essenceDrop;
-            }
-
-            // XP
-            let xpReward = (15 + (game.stage * 4)) * (1 + (game.relics.wisdomOrb.level * game.relics.wisdomOrb.multi)) * eq.xp;
-            gainXp(Math.floor(xpReward));
-
-            showFloatingText(window.innerWidth/2, window.innerHeight/2-100, `+${formatNumber(finalGold)}💰`, 'reward');
-            if (essenceDrop > 0) setTimeout(() => showFloatingText(window.innerWidth/2, window.innerHeight/2-140, `+${essenceDrop}💎`, 'essence-text'), 200);
-
-            const m = document.getElementById('monster');
-            m.classList.add('dead');
-            setTimeout(() => {
-                m.classList.remove('dead');
-                if (game.monster.isBoss) {
-                    if (game.stage === game.maxStage) game.maxStage++;
-                    game.stage++;
-                    game.killsInStage = 0;
-                    saveGame();
-                } else {
-                    game.killsInStage++;
-                }
-                spawnMonster(true);
-            }, 350);
-        }
-
-        function spawnMonster(forceNew) {
-            if (game.monster.hp > 0 && !forceNew) return;
-            const isBossSpawn = (game.killsInStage >= 9);
-            game.monster.isBoss = isBossSpawn;
-            let hpBase = 30 * Math.pow(1.6, game.stage - 1); // Harder scaling
-
-            if (isBossSpawn) {
-                hpBase *= 15;
-                game.monster.type = Math.floor(Math.random() * bosses.length);
-            } else {
-                game.monster.type = Math.floor(Math.random() * monsters.length);
-            }
-            game.monster.maxHp = Math.floor(hpBase);
-            game.monster.hp = game.monster.maxHp;
-            renderUI();
-        }
-
-        function gainXp(amount) {
-            game.xp += amount;
-            if (game.xp >= game.xpToNext) {
-                game.level++;
-                game.statPoints += 3; // +3 SP per level
-                game.xp -= game.xpToNext;
-                game.xpToNext = Math.floor(game.xpToNext * 1.6);
-                tg.HapticFeedback.notificationOccurred('success');
-                renderUI();
-            }
-        }
-
-        // === ACTIONS ===
-        function buyAttribute(attr) {
-            if (game.statPoints > 0) {
-                game.statPoints--;
-                game.attributes[attr]++;
-                saveAndRender();
-            }
-        }
-
-        function upgrade(type) {
-            const cost = game.costs[type];
-            if (game.gold >= cost) {
-                game.gold -= cost;
-                if (type === 'damage') {
-                    game.stats.damage += Math.ceil(game.stats.damage * 0.5);
-                    game.costs.damage = Math.floor(game.costs.damage * 1.8); // Harder cost
-                } else if (type === 'crit') {
-                    game.stats.critChance = Math.min(game.stats.critChance + 1, 80);
-                    game.costs.crit = Math.floor(game.costs.crit * 1.6);
-                } else if (type === 'ferocity') {
-                    game.stats.critMulti += 0.1;
-                    game.costs.ferocity = Math.floor(game.costs.ferocity * 2.0);
-                } else if (type === 'greed') {
-                    game.stats.goldBonus += 10;
-                    game.costs.greed = Math.floor(game.costs.greed * 2.0);
-                } else if (type === 'doubleStrike') {
-                    game.stats.doubleStrike = Math.min(game.stats.doubleStrike + 5, 50);
-                    game.costs.doubleStrike *= 2;
-                } else if (type === 'luckyStrike') {
-                    game.stats.luckyStrike = Math.min(game.stats.luckyStrike + 2, 40);
-                    game.costs.luckyStrike *= 3;
-                }
-                saveAndRender();
-            }
-        }
-
-        function upgradeAlly(type) {
-            const ally = game.allies[type];
-            if (game.gold >= ally.cost) {
-                game.gold -= ally.cost;
-                ally.lvl++;
-                ally.cost = Math.floor(ally.cost * 1.5); // Harder cost
-                saveAndRender();
-            }
-        }
-
-        function upgradeTech(type) {
-            const tech = game.workshop[type];
-            if (game.gold >= tech.cost) {
-                game.gold -= tech.cost;
-                tech.level++;
-                tech.cost = Math.floor(tech.cost * 3.0);
-                saveAndRender();
-            }
-        }
-
-        function upgradeRelic(type) {
-            const relic = game.relics[type];
-            if (game.essence >= relic.cost) {
-                game.essence -= relic.cost;
-                relic.level++;
-                relic.cost += 1;
-                saveAndRender();
-            }
-        }
-
-        function upgradeEquipment(slot) {
-            const currentLvl = game.equipment[slot];
-            if (currentLvl >= 7) return; // Max Level
-            const costObj = equipCosts[currentLvl];
-
-            if (game.gold >= costObj.g && game.essence >= costObj.e) {
-                game.gold -= costObj.g;
-                game.essence -= costObj.e;
-                game.equipment[slot]++;
-                tg.HapticFeedback.notificationOccurred('success');
-                saveAndRender();
-            }
-        }
-
-        function changeStage(delta) {
-            const newStage = game.stage + delta;
-            if (newStage >= 1 && newStage <= game.maxStage) {
-                game.stage = newStage;
+                if (game.stage === game.maxStage) game.maxStage++;
+                game.stage++;
                 game.killsInStage = 0;
-                spawnMonster(true);
                 saveGame();
-                renderUI();
+            } else {
+                game.killsInStage++;
             }
-        }
+            spawnMonster(true);
+        }, 350);
+    }
 
-        function saveAndRender() {
-            tg.HapticFeedback.selectionChanged();
+    function spawnMonster(forceNew) {
+        if (game.monster.hp > 0 && !forceNew) return;
+        const isBossSpawn = (game.killsInStage >= 9);
+        game.monster.isBoss = isBossSpawn;
+        let hpBase = 30 * Math.pow(1.6, game.stage - 1); // Harder scaling
+
+        if (isBossSpawn) {
+            hpBase *= 15;
+            game.monster.type = Math.floor(Math.random() * bosses.length);
+        } else {
+            game.monster.type = Math.floor(Math.random() * monsters.length);
+        }
+        game.monster.maxHp = Math.floor(hpBase);
+        game.monster.hp = game.monster.maxHp;
+        renderUI();
+    }
+
+    function gainXp(amount) {
+        game.xp += amount;
+        if (game.xp >= game.xpToNext) {
+            game.level++;
+            game.statPoints += 3; // +3 SP per level
+            game.xp -= game.xpToNext;
+            game.xpToNext = Math.floor(game.xpToNext * 1.6);
+            tg.HapticFeedback.notificationOccurred('success');
             renderUI();
+        }
+    }
+
+    // === ACTIONS ===
+    function buyAttribute(attr) {
+        if (game.statPoints > 0) {
+            game.statPoints--;
+            game.attributes[attr]++;
+            saveAndRender();
+        }
+    }
+
+    function upgrade(type) {
+        const cost = game.costs[type];
+        if (game.gold >= cost) {
+            game.gold -= cost;
+            if (type === 'damage') {
+                game.stats.damage += Math.ceil(game.stats.damage * 0.5);
+                game.costs.damage = Math.floor(game.costs.damage * 1.8); // Harder cost
+            } else if (type === 'crit') {
+                game.stats.critChance = Math.min(game.stats.critChance + 1, 80);
+                game.costs.crit = Math.floor(game.costs.crit * 1.6);
+            } else if (type === 'ferocity') {
+                game.stats.critMulti += 0.1;
+                game.costs.ferocity = Math.floor(game.costs.ferocity * 2.0);
+            } else if (type === 'greed') {
+                game.stats.goldBonus += 10;
+                game.costs.greed = Math.floor(game.costs.greed * 2.0);
+            } else if (type === 'doubleStrike') {
+                game.stats.doubleStrike = Math.min(game.stats.doubleStrike + 5, 50);
+                game.costs.doubleStrike *= 2;
+            } else if (type === 'luckyStrike') {
+                game.stats.luckyStrike = Math.min(game.stats.luckyStrike + 2, 40);
+                game.costs.luckyStrike *= 3;
+            }
+            saveAndRender();
+        }
+    }
+
+    function upgradeAlly(type) {
+        const ally = game.allies[type];
+        if (game.gold >= ally.cost) {
+            game.gold -= ally.cost;
+            ally.lvl++;
+            ally.cost = Math.floor(ally.cost * 1.5); // Harder cost
+            saveAndRender();
+        }
+    }
+
+    function upgradeTech(type) {
+        const tech = game.workshop[type];
+        if (game.gold >= tech.cost) {
+            game.gold -= tech.cost;
+            tech.level++;
+            tech.cost = Math.floor(tech.cost * 3.0);
+            saveAndRender();
+        }
+    }
+
+    function upgradeRelic(type) {
+        const relic = game.relics[type];
+        if (game.essence >= relic.cost) {
+            game.essence -= relic.cost;
+            relic.level++;
+            relic.cost += 1;
+            saveAndRender();
+        }
+    }
+
+    function upgradeEquipment(slot) {
+        const currentLvl = game.equipment[slot];
+        if (currentLvl >= 7) return; // Max Level
+        const costObj = equipCosts[currentLvl];
+
+        if (game.gold >= costObj.g && game.essence >= costObj.e) {
+            game.gold -= costObj.g;
+            game.essence -= costObj.e;
+            game.equipment[slot]++;
+            tg.HapticFeedback.notificationOccurred('success');
+            saveAndRender();
+        }
+    }
+
+    function changeStage(delta) {
+        const newStage = game.stage + delta;
+        if (newStage >= 1 && newStage <= game.maxStage) {
+            game.stage = newStage;
+            game.killsInStage = 0;
+            spawnMonster(true);
             saveGame();
+            renderUI();
+        }
+    }
+
+    function saveAndRender() {
+        tg.HapticFeedback.selectionChanged();
+        renderUI();
+        saveGame();
+    }
+
+    function openTab(tabName) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.getElementById('tab-' + tabName).classList.add('active');
+    }
+
+    // === UI HELPERS ===
+    function formatNumber(num) {
+        if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+        if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+        if (num >= 1e3) return (num / 1e3).toFixed(1) + 'k';
+        return Math.floor(num);
+    }
+
+    function showFloatingText(x, y, text, type) {
+        const el = document.createElement('div');
+        el.className = `damage-text ${type}`;
+        el.innerText = text;
+        if (type !== 'reward' && type !== 'essence-text') {
+            const rndX = (Math.random() - 0.5) * 80;
+            el.style.left = (x + rndX) + 'px';
+            el.style.top = y + 'px';
+        } else {
+            el.style.top = y + 'px';
+        }
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 700);
+    }
+
+    function animateMonsterHit() {
+        const m = document.getElementById('monster');
+        m.classList.remove('hit');
+        void m.offsetWidth; m.classList.add('hit');
+    }
+
+    // === RENDERING LISTS (Once) ===
+    function renderLists() {
+        // Allies
+        let alliesHtml = '';
+        for (const key in game.allies) {
+            alliesHtml += `<div class="upgrade-card"><div class="upgrade-info"><h4>${game.allies[key].name}</h4><p>DPS: <span id="dps_${key}">0</span> | Ур. <span id="lvl_${key}">0</span></p></div><button class="buy-btn" id="btnBuy_${key}" onclick="upgradeAlly('${key}')">0</button></div>`;
+        }
+        document.getElementById('alliesList').innerHTML = alliesHtml;
+
+        // Workshop
+        let wsHtml = '';
+        for (const key in game.workshop) {
+            wsHtml += `<div class="upgrade-card"><div class="upgrade-info"><h4>${game.workshop[key].name}</h4><p style="color:var(--accent)">Бонус: +<span id="techVal_${key}">0</span>%</p></div><button class="buy-btn" id="btnTech_${key}" onclick="upgradeTech('${key}')">0</button></div>`;
+        }
+        document.getElementById('workshopList').innerHTML = wsHtml;
+
+        // Relics
+        let relHtml = '';
+        for (const key in game.relics) {
+            relHtml += `<div class="upgrade-card" style="border:1px solid var(--essence-color)"><div class="upgrade-info"><h4>${game.relics[key].name}</h4><p style="color:var(--essence-color)">Эффект: <span id="relicVal_${key}">0</span></p></div><button class="buy-btn essence" id="btnRelic_${key}" onclick="upgradeRelic('${key}')">0 💎</button></div>`;
+        }
+        document.getElementById('relicsList').innerHTML = relHtml;
+    }
+
+    // === MAIN RENDER LOOP ===
+    function renderUI() {
+        // Header
+        document.getElementById('gold').innerText = formatNumber(game.gold);
+        document.getElementById('essence').innerText = formatNumber(game.essence);
+        document.getElementById('heroLvlText').innerText = game.level;
+
+        // Stat Points Alert
+        const spAlert = document.getElementById('spAlert');
+        if (game.statPoints > 0) {
+            spAlert.style.display = 'inline';
+            document.getElementById('spCount').innerText = game.statPoints;
+            document.getElementById('freeSp').innerText = game.statPoints;
+        } else {
+            spAlert.style.display = 'none';
+            document.getElementById('freeSp').innerText = 0;
         }
 
-        function openTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById('tab-' + tabName).classList.add('active');
-        }
+        // Stats
+        document.getElementById('statStr').innerText = game.attributes.str;
+        document.getElementById('statAgi').innerText = game.attributes.agi;
+        document.getElementById('statLuk').innerText = game.attributes.luk;
 
-        // === UI HELPERS ===
-        function formatNumber(num) {
-            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
-            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
-            if (num >= 1e3) return (num / 1e3).toFixed(1) + 'k';
-            return Math.floor(num);
-        }
+        // Dmg Display
+        document.getElementById('clickDmgText').innerText = formatNumber(getHeroClickDamage());
+        document.getElementById('idleDpsText').innerText = formatNumber(calculateTotalDps());
 
-        function showFloatingText(x, y, text, type) {
-            const el = document.createElement('div');
-            el.className = `damage-text ${type}`;
-            el.innerText = text;
-            if (type !== 'reward' && type !== 'essence-text') {
-                const rndX = (Math.random() - 0.5) * 80;
-                el.style.left = (x + rndX) + 'px';
-                el.style.top = y + 'px';
+        // Equipment Rendering
+        const slots = ['head', 'chest', 'weapon', 'shield', 'legs', 'boots'];
+        const eqBonuses = getEquipBonuses();
+
+        slots.forEach(slot => {
+            const lvl = game.equipment[slot];
+            document.getElementById(`eqName_${slot}`).innerText = `${equipNames[lvl]} (+${lvl})`;
+            document.getElementById(`eqName_${slot}`).style.color = lvl >= 4 ? '#ac50ff' : (lvl >= 2 ? '#00d2ff' : '#fff');
+
+            const btn = document.getElementById(`btnEq_${slot}`);
+            if (lvl >= 7) {
+                btn.innerText = "MAX";
+                btn.disabled = true;
             } else {
-                el.style.top = y + 'px';
+                const cost = equipCosts[lvl];
+                btn.innerText = `${formatNumber(cost.g)}💰 ${cost.e > 0 ? cost.e + '💎' : ''}`;
+                btn.disabled = (game.gold < cost.g || game.essence < cost.e);
             }
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 700);
+        });
+        // Update specific text for bonuses
+        document.getElementById('eqBonus_head').innerText = `+${Math.round((eqBonuses.xp-1)*100)}% XP`;
+        document.getElementById('eqBonus_chest').innerText = `+${Math.round((eqBonuses.gold-1)*100)}% Gold`;
+        document.getElementById('eqBonus_weapon').innerText = `x${eqBonuses.click.toFixed(1)} Click`;
+        document.getElementById('eqBonus_shield').innerText = `+${Math.round((eqBonuses.boss-1)*100)}% Boss`;
+        document.getElementById('eqBonus_legs').innerText = `+${eqBonuses.essence.toFixed(1)}% Ess`;
+        document.getElementById('eqBonus_boots').innerText = `+${eqBonuses.crit}% Crit`;
+
+        // Monster
+        const xpPct = Math.min(100, (game.xp / game.xpToNext) * 100);
+        document.getElementById('xpBar').style.width = `${xpPct}%`;
+        document.getElementById('stageNum').innerText = game.stage;
+
+        // Buttons Updates (Skills)
+        updateBtn('btnBuyDmg', game.costs.damage, game.gold);
+        updateBtn('btnBuyCrit', game.costs.crit, game.gold);
+        updateBtn('btnBuyFerocity', game.costs.ferocity, game.gold);
+        updateBtn('btnBuyDouble', game.costs.doubleStrike, game.gold);
+
+        document.getElementById('dmgVal').innerText = formatNumber(game.stats.damage);
+        document.getElementById('critVal').innerText = game.stats.critChance;
+        document.getElementById('critMultiVal').innerText = game.stats.critMulti.toFixed(1);
+        document.getElementById('doubleStrikeVal').innerText = game.stats.doubleStrike;
+
+        // Allies Update Loop
+        for (const key in game.allies) {
+            const elDps = document.getElementById(`dps_${key}`);
+            if(elDps) {
+                elDps.innerText = formatNumber(getAllyDps(key));
+                document.getElementById(`lvl_${key}`).innerText = game.allies[key].lvl;
+                updateBtn(`btnBuy_${key}`, game.allies[key].cost, game.gold);
+            }
         }
 
-        function animateMonsterHit() {
-            const m = document.getElementById('monster');
-            m.classList.remove('hit');
-            void m.offsetWidth; m.classList.add('hit');
+        // Workshop Update Loop
+        for (const key in game.workshop) {
+            const elVal = document.getElementById(`techVal_${key}`);
+            if(elVal) {
+                elVal.innerText = Math.round(game.workshop[key].level * game.workshop[key].multi * 100);
+                updateBtn(`btnTech_${key}`, game.workshop[key].cost, game.gold);
+            }
         }
 
-        // === RENDERING LISTS (Once) ===
-        function renderLists() {
-            // Allies
-            let alliesHtml = '';
-            for (const key in game.allies) {
-                alliesHtml += `<div class="upgrade-card"><div class="upgrade-info"><h4>${game.allies[key].name}</h4><p>DPS: <span id="dps_${key}">0</span> | Ур. <span id="lvl_${key}">0</span></p></div><button class="buy-btn" id="btnBuy_${key}" onclick="upgradeAlly('${key}')">0</button></div>`;
-            }
-            document.getElementById('alliesList').innerHTML = alliesHtml;
+        // Relics Update Loop
+        for (const key in game.relics) {
+            const elVal = document.getElementById(`relicVal_${key}`);
+            if(elVal) {
+                // Custom display based on type
+                if(key === 'fatalStrike' || key === 'soulPrism')
+                    elVal.innerText = (game.relics[key].level * game.relics[key].chance) + '% Шанс';
+                else
+                    elVal.innerText = 'x' + (1 + game.relics[key].level * game.relics[key].multi).toFixed(1);
 
-            // Workshop
-            let wsHtml = '';
-            for (const key in game.workshop) {
-                wsHtml += `<div class="upgrade-card"><div class="upgrade-info"><h4>${game.workshop[key].name}</h4><p style="color:var(--accent)">Бонус: +<span id="techVal_${key}">0</span>%</p></div><button class="buy-btn" id="btnTech_${key}" onclick="upgradeTech('${key}')">0</button></div>`;
+                updateBtn(`btnRelic_${key}`, game.relics[key].cost, game.essence, true);
             }
-            document.getElementById('workshopList').innerHTML = wsHtml;
-
-            // Relics
-            let relHtml = '';
-            for (const key in game.relics) {
-                relHtml += `<div class="upgrade-card" style="border:1px solid var(--essence-color)"><div class="upgrade-info"><h4>${game.relics[key].name}</h4><p style="color:var(--essence-color)">Эффект: <span id="relicVal_${key}">0</span></p></div><button class="buy-btn essence" id="btnRelic_${key}" onclick="upgradeRelic('${key}')">0 💎</button></div>`;
-            }
-            document.getElementById('relicsList').innerHTML = relHtml;
         }
 
-        // === MAIN RENDER LOOP ===
-        function renderUI() {
-            // Header
-            document.getElementById('gold').innerText = formatNumber(game.gold);
-            document.getElementById('essence').innerText = formatNumber(game.essence);
-            document.getElementById('heroLvlText').innerText = game.level;
+        // Monster Logic Visualization
+        const arena = document.getElementById('arena');
+        const nameEl = document.getElementById('monsterNameDisplay');
+        const spriteEl = document.getElementById('monster');
+        const counterEl = document.getElementById('monsterCounter');
 
-            // Stat Points Alert
-            const spAlert = document.getElementById('spAlert');
-            if (game.statPoints > 0) {
-                spAlert.style.display = 'inline';
-                document.getElementById('spCount').innerText = game.statPoints;
-                document.getElementById('freeSp').innerText = game.statPoints;
-            } else {
-                spAlert.style.display = 'none';
-                document.getElementById('freeSp').innerText = 0;
+        if (game.monster.isBoss) {
+            counterEl.innerText = "BOSS FIGHT";
+            counterEl.style.color = "#ff453a";
+            nameEl.innerText = bosses[game.monster.type % bosses.length];
+            spriteEl.innerText = bossEmojis[game.monster.type % bossEmojis.length];
+            arena.classList.add('is-boss');
+        } else {
+            counterEl.innerText = `${game.killsInStage + 1} / 10`;
+            counterEl.style.color = "#888";
+            nameEl.innerText = monsters[game.monster.type % monsters.length];
+            spriteEl.innerText = monsterEmojis[game.monster.type % monsterEmojis.length];
+            arena.classList.remove('is-boss');
+        }
+        const hpPct = Math.max(0, (game.monster.hp / game.monster.maxHp) * 100);
+        document.getElementById('hpBar').style.width = `${hpPct}%`;
+        document.getElementById('hpText').innerText = `${formatNumber(game.monster.hp)} / ${formatNumber(game.monster.maxHp)}`;
+    }
+
+    function updateBtn(id, cost, balance, isEssence = false) {
+        const btn = document.getElementById(id);
+        if (!btn) return;
+        btn.innerText = `${formatNumber(cost)}${isEssence ? ' 💎' : ''}`;
+        btn.disabled = balance < cost;
+    }
+
+    // === PROMO CODE SYSTEM ===
+
+        // Список использованных кодов (храним локально, чтобы не абузили один и тот же код)
+        let usedCodes = [];
+
+        // Загружаем список использованных кодов при старте
+        function loadUsedCodes() {
+            const saved = localStorage.getItem('rpg_used_codes');
+            if (saved) usedCodes = JSON.parse(saved);
+        }
+
+        // Вызови эту функцию внутри initGame()
+        loadUsedCodes();
+
+        function activatePromo() {
+            const input = document.getElementById('promoInput');
+            const status = document.getElementById('promoStatus');
+            const code = input.value.trim().toUpperCase();
+
+            if (!code) return;
+
+            // Проверка: использовали ли мы этот код?
+            if (usedCodes.includes(code)) {
+                status.innerText = "⛔ Этот код уже использован!";
+                status.style.color = "#ff453a";
+                return;
             }
 
-            // Stats
-            document.getElementById('statStr').innerText = game.attributes.str;
-            document.getElementById('statAgi').innerText = game.attributes.agi;
-            document.getElementById('statLuk').innerText = game.attributes.luk;
+            // Логика разбора кода
+            let success = false;
+            let rewardMsg = "";
 
-            // Dmg Display
-            document.getElementById('clickDmgText').innerText = formatNumber(getHeroClickDamage());
-            document.getElementById('idleDpsText').innerText = formatNumber(calculateTotalDps());
-
-            // Equipment Rendering
-            const slots = ['head', 'chest', 'weapon', 'shield', 'legs', 'boots'];
-            const eqBonuses = getEquipBonuses();
-
-            slots.forEach(slot => {
-                const lvl = game.equipment[slot];
-                document.getElementById(`eqName_${slot}`).innerText = `${equipNames[lvl]} (+${lvl})`;
-                document.getElementById(`eqName_${slot}`).style.color = lvl >= 4 ? '#ac50ff' : (lvl >= 2 ? '#00d2ff' : '#fff');
-
-                const btn = document.getElementById(`btnEq_${slot}`);
-                if (lvl >= 7) {
-                    btn.innerText = "MAX";
-                    btn.disabled = true;
+            if (code.startsWith("GOLD-")) {
+                // Формат: GOLD-AMOUNT-RANDOM
+                const parts = code.split("-");
+                const amount = parseInt(parts[1]);
+                if (amount > 0) {
+                    game.gold += amount;
+                    rewardMsg = `+${formatNumber(amount)} Золота`;
+                    success = true;
+                }
+            }
+            else if (code.startsWith("ESS-")) {
+                // Формат: ESS-AMOUNT-RANDOM
+                const parts = code.split("-");
+                const amount = parseInt(parts[1]);
+                if (amount > 0) {
+                    game.essence += amount;
+                    rewardMsg = `+${amount} Эссенции`;
+                    success = true;
+                }
+            }
+            else if (code.startsWith("UNIT-ZEUS-")) {
+                // Даем Зевса бесплатно или ресурсы на него
+                if (game.allies.zeus.lvl === 0) {
+                    game.allies.zeus.lvl = 1;
+                    game.gold += 1000000; // Бонус
+                    rewardMsg = "Зевс разблокирован!";
+                    success = true;
                 } else {
-                    const cost = equipCosts[lvl];
-                    btn.innerText = `${formatNumber(cost.g)}💰 ${cost.e > 0 ? cost.e + '💎' : ''}`;
-                    btn.disabled = (game.gold < cost.g || game.essence < cost.e);
-                }
-            });
-            // Update specific text for bonuses
-            document.getElementById('eqBonus_head').innerText = `+${Math.round((eqBonuses.xp-1)*100)}% XP`;
-            document.getElementById('eqBonus_chest').innerText = `+${Math.round((eqBonuses.gold-1)*100)}% Gold`;
-            document.getElementById('eqBonus_weapon').innerText = `x${eqBonuses.click.toFixed(1)} Click`;
-            document.getElementById('eqBonus_shield').innerText = `+${Math.round((eqBonuses.boss-1)*100)}% Boss`;
-            document.getElementById('eqBonus_legs').innerText = `+${eqBonuses.essence.toFixed(1)}% Ess`;
-            document.getElementById('eqBonus_boots').innerText = `+${eqBonuses.crit}% Crit`;
-
-            // Monster
-            const xpPct = Math.min(100, (game.xp / game.xpToNext) * 100);
-            document.getElementById('xpBar').style.width = `${xpPct}%`;
-            document.getElementById('stageNum').innerText = game.stage;
-
-            // Buttons Updates (Skills)
-            updateBtn('btnBuyDmg', game.costs.damage, game.gold);
-            updateBtn('btnBuyCrit', game.costs.crit, game.gold);
-            updateBtn('btnBuyFerocity', game.costs.ferocity, game.gold);
-            updateBtn('btnBuyDouble', game.costs.doubleStrike, game.gold);
-
-            document.getElementById('dmgVal').innerText = formatNumber(game.stats.damage);
-            document.getElementById('critVal').innerText = game.stats.critChance;
-            document.getElementById('critMultiVal').innerText = game.stats.critMulti.toFixed(1);
-            document.getElementById('doubleStrikeVal').innerText = game.stats.doubleStrike;
-
-            // Allies Update Loop
-            for (const key in game.allies) {
-                const elDps = document.getElementById(`dps_${key}`);
-                if(elDps) {
-                    elDps.innerText = formatNumber(getAllyDps(key));
-                    document.getElementById(`lvl_${key}`).innerText = game.allies[key].lvl;
-                    updateBtn(`btnBuy_${key}`, game.allies[key].cost, game.gold);
+                     game.gold += 50000000; // Компенсация
+                     rewardMsg = "+50М Золота (Зевс уже есть)";
+                     success = true;
                 }
             }
 
-            // Workshop Update Loop
-            for (const key in game.workshop) {
-                const elVal = document.getElementById(`techVal_${key}`);
-                if(elVal) {
-                    elVal.innerText = Math.round(game.workshop[key].level * game.workshop[key].multi * 100);
-                    updateBtn(`btnTech_${key}`, game.workshop[key].cost, game.gold);
-                }
-            }
+            if (success) {
+                // Сохраняем код как использованный
+                usedCodes.push(code);
+                localStorage.setItem('rpg_used_codes', JSON.stringify(usedCodes));
 
-            // Relics Update Loop
-            for (const key in game.relics) {
-                const elVal = document.getElementById(`relicVal_${key}`);
-                if(elVal) {
-                    // Custom display based on type
-                    if(key === 'fatalStrike' || key === 'soulPrism')
-                        elVal.innerText = (game.relics[key].level * game.relics[key].chance) + '% Шанс';
-                    else
-                        elVal.innerText = 'x' + (1 + game.relics[key].level * game.relics[key].multi).toFixed(1);
+                status.innerText = `✅ Успешно! ${rewardMsg}`;
+                status.style.color = "#30d158";
+                input.value = "";
 
-                    updateBtn(`btnRelic_${key}`, game.relics[key].cost, game.essence, true);
-                }
-            }
-
-            // Monster Logic Visualization
-            const arena = document.getElementById('arena');
-            const nameEl = document.getElementById('monsterNameDisplay');
-            const spriteEl = document.getElementById('monster');
-            const counterEl = document.getElementById('monsterCounter');
-
-            if (game.monster.isBoss) {
-                counterEl.innerText = "BOSS FIGHT";
-                counterEl.style.color = "#ff453a";
-                nameEl.innerText = bosses[game.monster.type % bosses.length];
-                spriteEl.innerText = bossEmojis[game.monster.type % bossEmojis.length];
-                arena.classList.add('is-boss');
+                tg.HapticFeedback.notificationOccurred('success');
+                saveAndRender();
             } else {
-                counterEl.innerText = `${game.killsInStage + 1} / 10`;
-                counterEl.style.color = "#888";
-                nameEl.innerText = monsters[game.monster.type % monsters.length];
-                spriteEl.innerText = monsterEmojis[game.monster.type % monsterEmojis.length];
-                arena.classList.remove('is-boss');
+                status.innerText = "❌ Неверный код";
+                status.style.color = "#ff453a";
+                tg.HapticFeedback.notificationOccurred('error');
             }
-            const hpPct = Math.max(0, (game.monster.hp / game.monster.maxHp) * 100);
-            document.getElementById('hpBar').style.width = `${hpPct}%`;
-            document.getElementById('hpText').innerText = `${formatNumber(game.monster.hp)} / ${formatNumber(game.monster.maxHp)}`;
         }
 
-        function updateBtn(id, cost, balance, isEssence = false) {
-            const btn = document.getElementById(id);
-            if (!btn) return;
-            btn.innerText = `${formatNumber(cost)}${isEssence ? ' 💎' : ''}`;
-            btn.disabled = balance < cost;
+        function resetProgress() {
+            if(confirm("Вы уверены? Весь прогресс будет удален!")) {
+                localStorage.clear();
+                location.reload();
+            }
         }
 
-        initGame();
+    initGame();
 
-    </script>
+</script>
 </body>
 </html>
