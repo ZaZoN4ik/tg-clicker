@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RPG Relic Clicker</title>
+    <title>RPG Legend Clicker</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -18,7 +18,7 @@
             --bg-color: #0f0f10;
             --card-bg: #1c1c1e;
             --accent: #ff9f0a;
-            --essence-color: #bf5af2; /* Фиолетовый для Эссенции */
+            --essence-color: #bf5af2;
             --hp-color: #ff453a;
             --xp-color: #0a84ff;
             --text-primary: #ffffff;
@@ -39,7 +39,7 @@
 
         #saveStatus {
             position: absolute;
-            top: 85px;
+            top: 90px;
             right: 10px;
             font-size: 10px;
             color: #30d158;
@@ -55,12 +55,12 @@
 
         /* --- HEADER --- */
         .hero-panel {
-            padding: 10px 16px;
+            padding: 12px 16px;
             background: rgba(28, 28, 30, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid #333;
             display: grid;
-            grid-template-columns: 1fr auto;
+            grid-template-columns: 1fr 1fr;
             gap: 5px;
             z-index: 10;
             position: relative;
@@ -69,10 +69,21 @@
         .hero-stats-left { display: flex; flex-direction: column; justify-content: center; }
         .hero-stats-right { text-align: right; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
 
-        .hero-lvl { color: var(--accent); font-size: 14px; font-weight: 800; }
-        .hero-dps { font-size: 11px; color: var(--text-secondary); }
+        .hero-lvl { color: var(--accent); font-size: 14px; font-weight: 800; margin-bottom: 4px;}
 
-        .currency-row { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: flex-end; gap: 5px; }
+        /* Стили для показателей урона */
+        .damage-display {
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .dmg-row { display: flex; align-items: center; gap: 5px; }
+        .click-dmg { color: #ff453a; }
+        .idle-dps { color: #ffd60a; }
+
+        .currency-row { font-size: 15px; font-weight: 800; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: flex-end; gap: 5px; }
         .gold-val { color: #ffd60a; }
         .essence-val { color: var(--essence-color); text-shadow: 0 0 10px rgba(191, 90, 242, 0.4); }
 
@@ -215,9 +226,8 @@
             background: rgba(0,0,0,0.3);
             flex-shrink: 0;
             padding: 5px 5px 0 5px;
-            overflow-x: auto; /* Скролл если табов много */
+            overflow-x: auto;
         }
-        /* Скрываем скроллбар */
         .tabs::-webkit-scrollbar { display: none; }
 
         .tab-btn {
@@ -275,7 +285,6 @@
         }
         .buy-btn:disabled { background: #3a3a3c; color: #8e8e93; opacity: 1; }
 
-        /* Кнопка за Эссенцию (Фиолетовая) */
         .buy-btn.essence {
             background: var(--essence-color);
             color: white;
@@ -326,8 +335,17 @@
     <div class="hero-panel">
         <div class="hero-stats-left">
             <div class="hero-lvl" id="heroLvlText">LVL 1</div>
-            <div class="hero-dps" id="heroDpsText">0 DPS</div>
+
+            <div class="damage-display">
+                <div class="dmg-row click-dmg">
+                    <span>⚔️</span> <span id="clickDmgText">0</span>
+                </div>
+                <div class="dmg-row idle-dps">
+                    <span>⚡</span> <span id="idleDpsText">0</span> / сек
+                </div>
+            </div>
         </div>
+
         <div class="hero-stats-right">
             <div class="currency-row gold-val"><span id="gold">0</span> 💰</div>
             <div class="currency-row essence-val"><span id="essence">0</span> 💎</div>
@@ -435,6 +453,30 @@
                 </div>
                 <button class="buy-btn" id="btnBuyWarlock" onclick="upgradeAlly('warlock')">20K</button>
             </div>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>🗿 Титан</h4>
+                    <p>DPS: <span id="dpsTitan">2.5k</span> | Ур. <span id="allyTitanLvl">0</span></p>
+                </div>
+                <button class="buy-btn" id="btnBuyTitan" onclick="upgradeAlly('titan')">150K</button>
+            </div>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>👼 Ангел</h4>
+                    <p>DPS: <span id="dpsAngel">10k</span> | Ур. <span id="allyAngelLvl">0</span></p>
+                </div>
+                <button class="buy-btn" id="btnBuyAngel" onclick="upgradeAlly('angel')">1M</button>
+            </div>
+
+             <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>⚡ Зевс</h4>
+                    <p>DPS: <span id="dpsZeus">50k</span> | Ур. <span id="allyZeusLvl">0</span></p>
+                </div>
+                <button class="buy-btn" id="btnBuyZeus" onclick="upgradeAlly('zeus')">50M</button>
+            </div>
         </div>
 
         <div id="tab-workshop" class="tab-content">
@@ -492,7 +534,7 @@
             <div class="upgrade-card" style="border:1px solid var(--essence-color)">
                 <div class="upgrade-info">
                     <h4>🧿 Око Бездны</h4>
-                    <p>Шанс нанести x10 урон (Смертельный удар)</p>
+                    <p>Шанс нанести x10 урон</p>
                     <p style="color:var(--essence-color)">Шанс: <span id="relicFatalVal">0</span>%</p>
                 </div>
                 <button class="buy-btn essence" id="btnRelicFatal" onclick="upgradeRelic('fatalStrike')">5 💎</button>
@@ -507,7 +549,7 @@
         // === ДАННЫЕ ИГРЫ ===
         const initialState = {
             gold: 0,
-            essence: 0, // Новая валюта
+            essence: 0,
             level: 1,
             xp: 0,
             xpToNext: 100,
@@ -527,7 +569,10 @@
                 archer: { lvl: 0, dpsBase: 5, cost: 100 },
                 mage: { lvl: 0, dpsBase: 25, cost: 600 },
                 knight: { lvl: 0, dpsBase: 100, cost: 3000 },
-                warlock: { lvl: 0, dpsBase: 500, cost: 20000 }
+                warlock: { lvl: 0, dpsBase: 500, cost: 20000 },
+                titan: { lvl: 0, dpsBase: 2500, cost: 150000 },
+                angel: { lvl: 0, dpsBase: 10000, cost: 1000000 },
+                zeus: { lvl: 0, dpsBase: 50000, cost: 50000000 }
             },
 
             workshop: {
@@ -536,11 +581,10 @@
                 bossSlayer: { level: 0, multi: 0.1, cost: 10000 }
             },
 
-            // Новые реликвии
             relics: {
-                titanSword: { level: 0, multi: 0.1, cost: 1 }, // +10% Dmg, cost 1 essence
-                goldHorn: { level: 0, multi: 0.1, cost: 1 },   // +10% Gold, cost 1 essence
-                fatalStrike: { level: 0, chance: 1, cost: 5 }  // +1% chance, cost 5 essence
+                titanSword: { level: 0, multi: 0.1, cost: 1 },
+                goldHorn: { level: 0, multi: 0.1, cost: 1 },
+                fatalStrike: { level: 0, chance: 1, cost: 5 }
             },
 
             costs: {
@@ -564,15 +608,15 @@
 
         // === СОХРАНЕНИЯ ===
         function initGame() {
-            tg.CloudStorage.getItem('rpg_save_v7_relics', (err, value) => {
+            // Используем новый ключ для версий 7.2, но подгружаем данные 7.1
+            tg.CloudStorage.getItem('rpg_save_v7_2_final', (err, value) => {
                 if (!err && value) {
                     try {
                         const parsed = JSON.parse(value);
                         mergeData(game, parsed);
                     } catch (e) { console.error(e); }
                 } else {
-                    // Пробуем загрузить предыдущую версию, чтобы не терять прогресс
-                    const oldSave = localStorage.getItem('rpg_save_v6_final');
+                    const oldSave = localStorage.getItem('rpg_save_v7_1_army') || localStorage.getItem('rpg_save_v7_relics');
                     if (oldSave) {
                         try {
                             const parsedOld = JSON.parse(oldSave);
@@ -599,8 +643,8 @@
         function saveGame() {
             if (isCloudLoading) return;
             const dataStr = JSON.stringify(game);
-            localStorage.setItem('rpg_save_v7_relics', dataStr);
-            tg.CloudStorage.setItem('rpg_save_v7_relics', dataStr, (err, stored) => {
+            localStorage.setItem('rpg_save_v7_2_final', dataStr);
+            tg.CloudStorage.setItem('rpg_save_v7_2_final', dataStr, (err, stored) => {
                 if (!err && stored) showSaveStatus();
             });
         }
@@ -611,12 +655,11 @@
             setTimeout(() => el.style.opacity = 0, 2000);
         }
 
-        setInterval(saveGame, 60000);
+        setInterval(saveGame, 60000); // Автосейв раз в минуту
 
         // === РАСЧЕТЫ БОНУСОВ ===
 
         function getGlobalDamageMulti() {
-            // База 1.0 + (Уровень меча * 0.1) -> 1.0, 1.1, 1.2...
             return 1 + (game.relics.titanSword.level * game.relics.titanSword.multi);
         }
 
@@ -631,9 +674,7 @@
             if (type === 'archer') dps *= (1 + (game.workshop.archerBoost.level * game.workshop.archerBoost.multi));
             if (type === 'mage') dps *= (1 + (game.workshop.mageBoost.level * game.workshop.mageBoost.multi));
 
-            // Применяем Глобальный мультипликатор от реликвии
             dps *= getGlobalDamageMulti();
-
             return dps;
         }
 
@@ -650,7 +691,6 @@
             if (game.monster.isBoss) {
                 dmg *= (1 + (game.workshop.bossSlayer.level * game.workshop.bossSlayer.multi));
             }
-            // Глобальный мультипликатор
             dmg *= getGlobalDamageMulti();
             return dmg;
         }
@@ -669,10 +709,9 @@
 
             let damage = getHeroClickDamage();
             let isCrit = Math.random() * 100 < game.stats.critChance;
-
-            // Проверка на Fatal Strike (Реликвия)
             let isFatal = false;
-            if (!isCrit) { // Fatal strike работает только если не крит (для баланса, или можно сочетать)
+
+            if (!isCrit) {
                  if (Math.random() * 100 < (game.relics.fatalStrike.level * game.relics.fatalStrike.chance)) {
                      damage *= 10;
                      isFatal = true;
@@ -697,9 +736,9 @@
             if (isClick) {
                 let type = 'damage';
                 if (isCrit) type = 'crit';
-                if (isFatal) type = 'essence-text'; // Используем фиолетовый стиль для фатал
+                if (isFatal) type = 'essence-text';
 
-                let text = Math.floor(amount);
+                let text = formatNumber(Math.floor(amount)); // Форматируем число урона (k, M)
                 if (isFatal) text = "☠️ " + text;
 
                 showFloatingText(x, y, text, type);
@@ -716,30 +755,23 @@
         function killMonster() {
             tg.HapticFeedback.notificationOccurred('success');
 
-            // ЗОЛОТО
             let baseGold = 5 * Math.pow(1.55, game.stage - 1);
             if (game.monster.isBoss) baseGold *= 10;
 
-            // Бонусы: Скилл Алчность + Реликвия Рог
             let bonusMulti = (1 + (game.stats.goldBonus / 100)) * getGlobalGoldMulti();
             let finalGold = Math.floor(baseGold * bonusMulti);
             game.gold += finalGold;
 
-            // ЭССЕНЦИЯ (Только с боссов)
             let essenceDrop = 0;
             if (game.monster.isBoss) {
                 essenceDrop = 1;
-                // Каждый 10 уровень босс дает +1
                 if (game.stage % 10 === 0) essenceDrop += 1;
-
                 game.essence += essenceDrop;
             }
 
-            // ОПЫТ
             let xpReward = 15 + (game.stage * 3);
             gainXp(xpReward);
 
-            // Визуал наград
             showFloatingText(window.innerWidth / 2, window.innerHeight / 2 - 100, `+${formatNumber(finalGold)}💰`, 'reward');
             if (essenceDrop > 0) {
                  setTimeout(() => {
@@ -757,6 +789,9 @@
                     if (game.stage === game.maxStage) game.maxStage++;
                     game.stage++;
                     game.killsInStage = 0;
+
+                    // СОХРАНЕНИЕ ПОСЛЕ БОССА (Стадия сохраняется!)
+                    saveGame();
                 } else {
                     game.killsInStage++;
                 }
@@ -808,6 +843,8 @@
                 game.stage = newStage;
                 game.killsInStage = 0;
                 spawnMonster(true);
+                // Сохраняем при смене стадии, чтобы не потерять позицию
+                saveGame();
                 renderUI();
             }
         }
@@ -868,9 +905,7 @@
             if (game.essence >= relic.cost) {
                 game.essence -= relic.cost;
                 relic.level += 1;
-                // Цена реликвий тоже может расти, но медленно. Пока оставим статичной или +1
                 relic.cost += 1;
-
                 tg.HapticFeedback.notificationOccurred('success');
                 saveAndRender();
             }
@@ -892,7 +927,6 @@
                 el.style.left = (x + rndX) + 'px';
                 el.style.top = y + 'px';
             } else {
-                // Если награда, то центрируем (стили уже есть в CSS)
                 el.style.top = y + 'px';
             }
             document.body.appendChild(el);
@@ -917,7 +951,11 @@
             document.getElementById('gold').innerText = formatNumber(game.gold);
             document.getElementById('essence').innerText = formatNumber(game.essence);
             document.getElementById('heroLvlText').innerText = `LVL ${game.level}`;
-            document.getElementById('heroDpsText').innerText = `${formatNumber(calculateTotalDps())} DPS`;
+
+            // Новое отображение урона
+            document.getElementById('clickDmgText').innerText = formatNumber(getHeroClickDamage());
+            document.getElementById('idleDpsText').innerText = formatNumber(calculateTotalDps());
+
             const xpPct = Math.min(100, (game.xp / game.xpToNext) * 100);
             document.getElementById('xpBar').style.width = `${xpPct}%`;
 
@@ -958,12 +996,14 @@
             updateBtn('btnBuyMage', game.allies.mage.cost, game.gold);
             updateBtn('btnBuyKnight', game.allies.knight.cost, game.gold);
             updateBtn('btnBuyWarlock', game.allies.warlock.cost, game.gold);
+            updateBtn('btnBuyTitan', game.allies.titan.cost, game.gold);
+            updateBtn('btnBuyAngel', game.allies.angel.cost, game.gold);
+            updateBtn('btnBuyZeus', game.allies.zeus.cost, game.gold);
 
             updateBtn('btnTechArcher', game.workshop.archerBoost.cost, game.gold);
             updateBtn('btnTechMage', game.workshop.mageBoost.cost, game.gold);
             updateBtn('btnTechBoss', game.workshop.bossSlayer.cost, game.gold);
 
-            // Relic Buttons (Check Essence)
             updateBtn('btnRelicDmg', game.relics.titanSword.cost, game.essence);
             updateBtn('btnRelicGold', game.relics.goldHorn.cost, game.essence);
             updateBtn('btnRelicFatal', game.relics.fatalStrike.cost, game.essence);
@@ -974,6 +1014,7 @@
             document.getElementById('critMultiVal').innerText = game.stats.critMulti.toFixed(1);
             document.getElementById('greedVal').innerText = game.stats.goldBonus;
 
+            // Allies Texts
             document.getElementById('dpsArcher').innerText = formatNumber(getAllyDps('archer'));
             document.getElementById('allyArcherLvl').innerText = game.allies.archer.lvl;
             document.getElementById('dpsMage').innerText = formatNumber(getAllyDps('mage'));
@@ -982,12 +1023,17 @@
             document.getElementById('allyKnightLvl').innerText = game.allies.knight.lvl;
             document.getElementById('dpsWarlock').innerText = formatNumber(getAllyDps('warlock'));
             document.getElementById('allyWarlockLvl').innerText = game.allies.warlock.lvl;
+            document.getElementById('dpsTitan').innerText = formatNumber(getAllyDps('titan'));
+            document.getElementById('allyTitanLvl').innerText = game.allies.titan.lvl;
+            document.getElementById('dpsAngel').innerText = formatNumber(getAllyDps('angel'));
+            document.getElementById('allyAngelLvl').innerText = game.allies.angel.lvl;
+            document.getElementById('dpsZeus').innerText = formatNumber(getAllyDps('zeus'));
+            document.getElementById('allyZeusLvl').innerText = game.allies.zeus.lvl;
 
             document.getElementById('techArcherVal').innerText = Math.round(game.workshop.archerBoost.level * game.workshop.archerBoost.multi * 100);
             document.getElementById('techMageVal').innerText = Math.round(game.workshop.mageBoost.level * game.workshop.mageBoost.multi * 100);
             document.getElementById('techBossVal').innerText = Math.round(game.workshop.bossSlayer.level * game.workshop.bossSlayer.multi * 100);
 
-            // Relic Values
             document.getElementById('relicDmgVal').innerText = getGlobalDamageMulti().toFixed(1);
             document.getElementById('relicGoldVal').innerText = getGlobalGoldMulti().toFixed(1);
             document.getElementById('relicFatalVal').innerText = (game.relics.fatalStrike.level * game.relics.fatalStrike.chance);
@@ -995,10 +1041,9 @@
 
         function updateBtn(id, cost, balance) {
             const btn = document.getElementById(id);
+            if (!btn) return;
             btn.innerText = `${formatNumber(cost)}`;
-            // Если это кнопка реликвии, добавляем эмодзи
             if (id.includes('Relic')) btn.innerText += " 💎";
-
             btn.disabled = balance < cost;
         }
 
