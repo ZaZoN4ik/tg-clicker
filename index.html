@@ -6,7 +6,7 @@
     <title>Neon RPG Warlord</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* === CORE SETTINGS === */
+        /* === ДИЗАЙН И СТИЛИ === */
         :root {
             --bg-body: #000000;
             --bg-panel: #121214;
@@ -25,7 +25,7 @@
             user-select: none;
             -webkit-user-select: none;
             -webkit-tap-highlight-color: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -39,7 +39,7 @@
             overflow: hidden;
         }
 
-        /* === TOP HUD === */
+        /* Верхняя панель */
         .hud {
             padding: 10px 16px;
             display: flex;
@@ -66,7 +66,7 @@
             width: 0%; transition: width 0.3s; box-shadow: 0 0 10px var(--primary);
         }
 
-        /* === ARENA === */
+        /* Арена */
         .arena-container {
             flex-grow: 1;
             display: flex;
@@ -88,13 +88,6 @@
         }
         .hp-fill { height: 100%; width: 100%; background: var(--danger); transition: width 0.1s linear; }
 
-        .sprite-wrapper {
-            position: relative;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
         .sprite {
             font-size: 140px;
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
@@ -112,9 +105,8 @@
         }
         .nav-left { left: 0; }
         .nav-right { right: 0; }
-        .nav-arrow:active { color: white; }
 
-        /* === BOTTOM SHEET === */
+        /* Нижняя панель (Меню) */
         .content-sheet {
             background: var(--bg-panel);
             border-top-left-radius: 24px;
@@ -143,7 +135,7 @@
             padding: 15px;
         }
 
-        /* === CARDS === */
+        /* Карточки */
         .list-item {
             display: flex;
             align-items: center;
@@ -177,12 +169,13 @@
             border-radius: 10px;
             font-weight: 700;
             font-size: 12px;
-            min-width: 75px;
+            min-width: 85px;
+            text-align: center;
         }
         .btn-buy:disabled { background: #2c2c2e; color: #636366; }
         .btn-buy.essence { background: var(--essence); }
 
-        /* === NAV === */
+        /* Навигация */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
             height: var(--nav-height);
@@ -206,7 +199,7 @@
         .nav-item.active { color: var(--primary); }
         .nav-item.active .nav-icon { transform: scale(1.1); transition: transform 0.2s; }
 
-        /* GRID */
+        /* Сетки и анимации */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
         .stat-item {
             background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.08);
@@ -228,7 +221,6 @@
             padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; margin-left: auto;
         }
 
-        /* ANIMATIONS & UTILS */
         .hidden { display: none !important; }
         .floater { position: absolute; pointer-events: none; font-weight: 900; animation: floatUp 0.8s forwards; z-index: 50; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .f-dmg { color: white; font-size: 24px; }
@@ -260,7 +252,7 @@
         </div>
 
         <div class="hp-container"><div class="hp-fill" id="hpBar"></div></div>
-        <div class="sprite-wrapper"><div class="sprite" id="monster" onpointerdown="attack(event)">👾</div></div>
+        <div class="sprite" id="monster" onpointerdown="attack(event)">👾</div>
     </div>
 
     <div class="content-sheet">
@@ -314,7 +306,7 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // === CONFIG ===
+        // === CONFIGURATION ===
         const initialState = {
             gold: 0, essence: 0, level: 1, xp: 0, xpToNext: 150, statPoints: 0,
             stage: 1, maxStage: 1, killsInStage: 0,
@@ -322,7 +314,6 @@
             equipment: { head: 0, chest: 0, legs: 0, boots: 0, weapon: 0, shield: 0 },
             stats: { damage: 1, critChance: 0, critMulti: 2.0, goldBonus: 0, doubleStrike: 0, luckyStrike: 0 },
 
-            // Defining ICONS for Safe Merge
             allies: {
                 archer: { lvl: 0, dpsBase: 5, cost: 100, name: "Лучник", icon: "🏹" },
                 mage: { lvl: 0, dpsBase: 25, cost: 600, name: "Маг Огня", icon: "🔥" },
@@ -374,7 +365,7 @@
         const monsterEmojis = ["👾", "👺", "💀", "👻", "👹", "🐺", "🧛", "🧟"];
         const bossEmojis = ["🐲", "🐙", "👿", "🗿", "🧙‍♂️", "🦍"];
 
-        // === SAFE MERGE FUNCTION (Fixes the icon bug) ===
+        // === SAFE LOAD ===
         function safeMerge(target, source) {
             if (!source) return target;
             for (const key of Object.keys(target)) {
@@ -391,42 +382,33 @@
 
         function initGame() {
             try {
-                tg.CloudStorage.getItem('rpg_save_v10_final_fix', (err, value) => {
-                    if (!err && value) {
-                        safeMerge(game, JSON.parse(value));
-                    } else {
-                        // Attempt to load ANY old save, but merge it SAFELY
-                        const oldKeys = ['rpg_save_v10_ui', 'rpg_save_v9_equip', 'rpg_save_v8_mega'];
-                        for(let key of oldKeys) {
-                            const old = localStorage.getItem(key);
-                            if(old) { safeMerge(game, JSON.parse(old)); break; }
-                        }
+                tg.CloudStorage.getItem('rpg_save_v10_fix', (err, value) => {
+                    if (!err && value) safeMerge(game, JSON.parse(value));
+                    else {
+                        // Fallback logic
+                        const old = localStorage.getItem('rpg_save_v9_equip') || localStorage.getItem('rpg_save_v10_ui');
+                        if(old) safeMerge(game, JSON.parse(old));
                     }
-
                     const codes = localStorage.getItem('rpg_used_codes');
                     if(codes) usedCodes = JSON.parse(codes);
 
                     isCloudLoading = false;
                     renderStaticLists();
-                    renderUI();
+                    renderUI(); // Force update
                     spawnMonster(false);
                 });
-            } catch (e) {
-                alert("Ошибка сохранения. Сброс...");
-                localStorage.clear();
-                location.reload();
-            }
+            } catch (e) { localStorage.clear(); location.reload(); }
         }
 
         function saveGame() {
             if (isCloudLoading) return;
             const dataStr = JSON.stringify(game);
-            localStorage.setItem('rpg_save_v10_final_fix', dataStr);
-            tg.CloudStorage.setItem('rpg_save_v10_final_fix', dataStr);
+            localStorage.setItem('rpg_save_v10_fix', dataStr);
+            tg.CloudStorage.setItem('rpg_save_v10_fix', dataStr);
         }
         setInterval(saveGame, 60000);
 
-        // === RENDERERS ===
+        // === RENDERERS (LISTS) ===
         function renderStaticLists() {
             // Equipment
             let eqHtml = '';
@@ -446,7 +428,7 @@
             ];
             let skHtml = '';
             skills.forEach(s => {
-                skHtml += `<div class="list-item"><div class="item-icon">${s.i}</div><div class="item-info"><div class="item-name">${s.n}</div><div class="item-meta">${s.d}: <span id="${s.v}" class="highlight">0</span></div></div><button class="btn-buy" id="btnBuy_${s.id}" onclick="upgrade('${s.id}')">0</button></div>`;
+                skHtml += `<div class="list-item"><div class="item-icon">${s.i}</div><div class="item-info"><div class="item-name">${s.n}</div><div class="item-meta">${s.d}: <span id="${s.v}" class="highlight">0</span></div></div><button class="btn-buy" id="btnBuy_${s.id}" onclick="upgrade('${s.id}')">Loading...</button></div>`;
             });
             document.getElementById('skillsList').innerHTML = skHtml;
 
@@ -454,9 +436,8 @@
             let alHtml = '';
             for(let k in game.allies) {
                 const u = game.allies[k];
-                // Protection against undefined icons in corrupt saves
                 const icon = u.icon || "❓";
-                alHtml += `<div class="list-item"><div class="item-icon">${icon}</div><div class="item-info"><div class="item-name">${u.name}</div><div class="item-meta">DPS: <span id="dps_${k}">0</span> | Lv: <span id="lvl_${k}">0</span></div></div><button class="btn-buy" id="btnBuyUnit_${k}" onclick="upgradeAlly('${k}')">0</button></div>`;
+                alHtml += `<div class="list-item"><div class="item-icon">${icon}</div><div class="item-info"><div class="item-name">${u.name}</div><div class="item-meta">DPS: <span id="dps_${k}">0</span> | Lv: <span id="lvl_${k}">0</span></div></div><button class="btn-buy" id="btnBuyUnit_${k}" onclick="upgradeAlly('${k}')">Loading...</button></div>`;
             }
             document.getElementById('alliesList').innerHTML = alHtml;
 
@@ -465,7 +446,7 @@
             for(let k in game.workshop) {
                 const w = game.workshop[k];
                 const icon = w.icon || "🔨";
-                wsHtml += `<div class="list-item"><div class="item-icon">${icon}</div><div class="item-info"><div class="item-name">${w.name}</div><div class="item-meta highlight">Бонус: +<span id="techVal_${k}">0</span>%</div></div><button class="btn-buy" id="btnBuyTech_${k}" onclick="upgradeTech('${k}')">0</button></div>`;
+                wsHtml += `<div class="list-item"><div class="item-icon">${icon}</div><div class="item-info"><div class="item-name">${w.name}</div><div class="item-meta highlight">Бонус: +<span id="techVal_${k}">0</span>%</div></div><button class="btn-buy" id="btnBuyTech_${k}" onclick="upgradeTech('${k}')">Loading...</button></div>`;
             }
             document.getElementById('workshopList').innerHTML = wsHtml;
 
@@ -474,7 +455,7 @@
             for(let k in game.relics) {
                 const r = game.relics[k];
                 const icon = r.icon || "🔮";
-                rlHtml += `<div class="list-item" style="border-color:var(--essence)"><div class="item-icon">${icon}</div><div class="item-info"><div class="item-name" style="color:var(--essence)">${r.name}</div><div class="item-meta">Эффект: <span id="relicVal_${k}">0</span></div></div><button class="btn-buy essence" id="btnBuyRelic_${k}" onclick="upgradeRelic('${k}')">0</button></div>`;
+                rlHtml += `<div class="list-item" style="border-color:var(--essence)"><div class="item-icon">${icon}</div><div class="item-info"><div class="item-name" style="color:var(--essence)">${r.name}</div><div class="item-meta">Эффект: <span id="relicVal_${k}">0</span></div></div><button class="btn-buy essence" id="btnBuyRelic_${k}" onclick="upgradeRelic('${k}')">Loading...</button></div>`;
             }
             document.getElementById('relicsList').innerHTML = rlHtml;
         }
@@ -539,18 +520,15 @@
             let damage = getHeroClickDamage();
             let isCrit = Math.random() * 100 < (game.stats.critChance + getAttrCrit() + getEquipBonuses().crit);
             let isFatal = !isCrit && Math.random() * 100 < (game.relics.fatalStrike.level * game.relics.fatalStrike.chance);
+
             if (isFatal) damage *= 10;
             if (isCrit) damage = Math.floor(damage * game.stats.critMulti);
 
-            const rect = e.target.getBoundingClientRect();
-            const x = e.clientX || (rect.left + rect.width/2);
-            const y = e.clientY || (rect.top + rect.height/2);
-
             tg.HapticFeedback.impactOccurred(isFatal ? 'heavy' : (isCrit ? 'medium' : 'light'));
-            dealDamage(damage, true, isCrit, x, y, isFatal);
+            dealDamage(damage, true, isCrit, e.clientX, e.clientY, isFatal);
 
             if (Math.random() * 100 < game.stats.doubleStrike && game.monster.hp > 0) {
-                setTimeout(() => dealDamage(damage, true, isCrit, x+40, y-30, isFatal), 80);
+                setTimeout(() => dealDamage(damage, true, isCrit, e.clientX+40, e.clientY-30, isFatal), 80);
             }
         }
 
@@ -712,17 +690,17 @@
             document.body.appendChild(el); setTimeout(() => el.remove(), 800);
         }
 
+        // === MAIN RENDERER ===
         function renderUI() {
+            // Stats
             document.getElementById('gold').innerText = formatNumber(game.gold);
             document.getElementById('essence').innerText = formatNumber(game.essence);
             document.getElementById('heroLvl').innerText = game.level;
+            document.getElementById('spCount').innerText = game.statPoints;
 
             document.getElementById('statStr').innerText = game.attributes.str;
             document.getElementById('statAgi').innerText = game.attributes.agi;
             document.getElementById('statLuk').innerText = game.attributes.luk;
-            document.getElementById('spCount').innerText = game.statPoints;
-            const spAlert = document.getElementById('spAlert');
-            if(game.statPoints>0) { spAlert.classList.remove('hidden'); document.getElementById('spCount').innerText=game.statPoints; } else spAlert.classList.add('hidden');
 
             const clickDmg = getHeroClickDamage();
             const idleDps = calculateTotalDps();
@@ -730,11 +708,7 @@
             document.getElementById('idleDpsText').innerText = formatNumber(idleDps);
             document.getElementById('totalDps').innerText = formatNumber(idleDps);
 
-            document.getElementById('xpBar').style.width = Math.min(100, (game.xp/game.xpToNext)*100)+'%';
-            document.getElementById('stageNum').innerText = game.stage;
-            document.getElementById('prevStageBtn').style.opacity = game.stage<=1 ? 0.2 : 1;
-            document.getElementById('nextStageBtn').style.opacity = game.stage>=game.maxStage ? 0.2 : 1;
-
+            // Monster
             const m = game.monster;
             const ar = document.getElementById('arena');
             const mn = document.getElementById('monsterName');
@@ -753,10 +727,15 @@
                 ar.classList.remove('is-boss');
             }
             document.getElementById('hpBar').style.width = Math.max(0, (m.hp/m.maxHp)*100)+'%';
+            document.getElementById('stageNum').innerText = game.stage;
+            document.getElementById('prevStageBtn').style.opacity = game.stage<=1 ? 0.2 : 1;
+            document.getElementById('nextStageBtn').style.opacity = game.stage>=game.maxStage ? 0.2 : 1;
 
-            const upgBtn = (id, c, e=false) => { const b=document.getElementById(id); if(b) { b.innerText = formatNumber(c)+(e?' 💎':''); b.disabled = e ? game.essence<c : game.gold<c; }};
+            // UPDATES
+            const upgBtn = (id, c, e=false) => { const b=document.getElementById(id); if(b) { b.innerText = "💰 " + formatNumber(c)+(e?' 💎':''); b.disabled = e ? game.essence<c : game.gold<c; }};
             const updateTxt = (id, txt) => { const el=document.getElementById(id); if(el) el.innerText=txt; };
 
+            // Skills
             upgBtn('btnBuy_damage', game.costs.damage); updateTxt('dmgVal', formatNumber(game.stats.damage));
             upgBtn('btnBuy_crit', game.costs.crit); updateTxt('critVal', game.stats.critChance);
             upgBtn('btnBuy_ferocity', game.costs.ferocity); updateTxt('critMultiVal', game.stats.critMulti.toFixed(1));
@@ -764,6 +743,7 @@
             upgBtn('btnBuy_greed', game.costs.greed); updateTxt('greedVal', game.stats.goldBonus);
             upgBtn('btnBuy_luckyStrike', game.costs.luckyStrike); updateTxt('luckVal', game.stats.luckyStrike);
 
+            // Lists
             for(let k in game.allies) {
                 upgBtn(`btnBuyUnit_${k}`, game.allies[k].cost);
                 updateTxt(`dps_${k}`, formatNumber(getAllyDps(k)));
@@ -774,11 +754,12 @@
                 updateTxt(`techVal_${k}`, Math.round(game.workshop[k].level*game.workshop[k].multi*100));
             }
             for(let k in game.relics) {
-                upgBtn(`btnBuyRelic_${k}`, game.relics[k].cost, true);
+                const b=document.getElementById(`btnBuyRelic_${k}`); if(b) { b.innerText = "💎 " + game.relics[k].cost; b.disabled = game.essence < game.relics[k].cost; }
                 if(k.includes('fatal')||k.includes('soul')) updateTxt(`relicVal_${k}`, (game.relics[k].level*game.relics[k].chance)+'%');
                 else updateTxt(`relicVal_${k}`, 'x'+(1+game.relics[k].level*game.relics[k].multi).toFixed(1));
             }
 
+            // Equipment
             const eq = getEquipBonuses();
             updateTxt('eqBonus_head', `+${Math.round((eq.xp-1)*100)}% XP`);
             updateTxt('eqBonus_chest', `+${Math.round((eq.gold-1)*100)}% Gold`);
@@ -796,13 +777,11 @@
                 if(l>=7) { btn.innerText="MAX"; btn.disabled=true; }
                 else {
                     const c = equipCosts[l];
-                    btn.innerText = `${formatNumber(c.g)}${c.e?' +'+c.e+'💎':''}`;
+                    btn.innerText = `💰${formatNumber(c.g)}${c.e?' 💎'+c.e:''}`;
                     btn.disabled = (game.gold < c.g || game.essence < c.e);
                 }
             }
         }
-
-        initGame();
     </script>
 </body>
 </html>
