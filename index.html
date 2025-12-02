@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RPG Legend Clicker</title>
+    <title>RPG Ultimate Clicker</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -60,7 +60,7 @@
             backdrop-filter: blur(10px);
             border-bottom: 1px solid #333;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.1fr 0.9fr;
             gap: 5px;
             z-index: 10;
             position: relative;
@@ -71,7 +71,6 @@
 
         .hero-lvl { color: var(--accent); font-size: 14px; font-weight: 800; margin-bottom: 4px;}
 
-        /* Стили для показателей урона */
         .damage-display {
             font-size: 11px;
             font-weight: 600;
@@ -269,7 +268,7 @@
         }
 
         .upgrade-info { flex-grow: 1; margin-right: 10px; }
-        .upgrade-info h4 { margin: 0; font-size: 14px; color: white; }
+        .upgrade-info h4 { margin: 0; font-size: 14px; color: white; display: flex; align-items: center; gap: 5px; }
         .upgrade-info p { margin: 3px 0 0; font-size: 11px; color: var(--text-secondary); }
 
         .buy-btn {
@@ -335,7 +334,6 @@
     <div class="hero-panel">
         <div class="hero-stats-left">
             <div class="hero-lvl" id="heroLvlText">LVL 1</div>
-
             <div class="damage-display">
                 <div class="dmg-row click-dmg">
                     <span>⚔️</span> <span id="clickDmgText">0</span>
@@ -419,6 +417,24 @@
                 </div>
                 <button class="buy-btn" id="btnBuyGreed" onclick="upgrade('greed')">500</button>
             </div>
+
+            <div class="upgrade-card" style="border: 1px solid #ff9f0a44;">
+                <div class="upgrade-info">
+                    <h4>⚡ Двойной удар</h4>
+                    <p>Шанс нанести x2 хита за клик</p>
+                    <p style="color:var(--accent)">Шанс: <span id="doubleStrikeVal">0</span>%</p>
+                </div>
+                <button class="buy-btn" id="btnBuyDouble" onclick="upgrade('doubleStrike')">2K</button>
+            </div>
+
+            <div class="upgrade-card" style="border: 1px solid #ff9f0a44;">
+                <div class="upgrade-info">
+                    <h4>🍀 Удача</h4>
+                    <p>Шанс выбить x2 золота</p>
+                    <p style="color:var(--accent)">Шанс: <span id="luckVal">0</span>%</p>
+                </div>
+                <button class="buy-btn" id="btnBuyLuck" onclick="upgrade('luckyStrike')">3K</button>
+            </div>
         </div>
 
         <div id="tab-allies" class="tab-content">
@@ -480,10 +496,13 @@
         </div>
 
         <div id="tab-workshop" class="tab-content">
+            <div style="padding:10px; text-align:center; color:#888; font-size:11px;">
+                Улучшения Мастерской увеличивают урон войск на 20%
+            </div>
+
             <div class="upgrade-card">
                 <div class="upgrade-info">
-                    <h4>🏹 Тренировка Лучников</h4>
-                    <p>+20% урона лучников</p>
+                    <h4>🏹 Гильдия Лучников</h4>
                     <p style="color:var(--accent)">Бонус: +<span id="techArcherVal">0</span>%</p>
                 </div>
                 <button class="buy-btn" id="btnTechArcher" onclick="upgradeTech('archerBoost')">1K</button>
@@ -491,8 +510,7 @@
 
             <div class="upgrade-card">
                 <div class="upgrade-info">
-                    <h4>🧙 Магический Круг</h4>
-                    <p>+20% урона магов</p>
+                    <h4>🧙 Башня Магов</h4>
                     <p style="color:var(--accent)">Бонус: +<span id="techMageVal">0</span>%</p>
                 </div>
                 <button class="buy-btn" id="btnTechMage" onclick="upgradeTech('mageBoost')">5K</button>
@@ -500,8 +518,48 @@
 
             <div class="upgrade-card">
                 <div class="upgrade-info">
+                    <h4>🛡 Оружейная Рыцарей</h4>
+                    <p style="color:var(--accent)">Бонус: +<span id="techKnightVal">0</span>%</p>
+                </div>
+                <button class="buy-btn" id="btnTechKnight" onclick="upgradeTech('knightBoost')">20K</button>
+            </div>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>💀 Склеп Некромантов</h4>
+                    <p style="color:var(--accent)">Бонус: +<span id="techWarlockVal">0</span>%</p>
+                </div>
+                <button class="buy-btn" id="btnTechWarlock" onclick="upgradeTech('warlockBoost')">100K</button>
+            </div>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>🗿 Руна Титанов</h4>
+                    <p style="color:var(--accent)">Бонус: +<span id="techTitanVal">0</span>%</p>
+                </div>
+                <button class="buy-btn" id="btnTechTitan" onclick="upgradeTech('titanBoost')">500K</button>
+            </div>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>👼 Небесный Свет</h4>
+                    <p style="color:var(--accent)">Бонус: +<span id="techAngelVal">0</span>%</p>
+                </div>
+                <button class="buy-btn" id="btnTechAngel" onclick="upgradeTech('angelBoost')">2M</button>
+            </div>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>⚡ Храм Зевса</h4>
+                    <p style="color:var(--accent)">Бонус: +<span id="techZeusVal">0</span>%</p>
+                </div>
+                <button class="buy-btn" id="btnTechZeus" onclick="upgradeTech('zeusBoost')">100M</button>
+            </div>
+
+            <div class="upgrade-card" style="border-top: 1px solid #444; margin-top:15px;">
+                <div class="upgrade-info">
                     <h4>🐲 Убийца Боссов</h4>
-                    <p>+10% урона по Боссам (Герой)</p>
+                    <p>+10% урона Героя по Боссам</p>
                     <p style="color:var(--accent)">Бонус: +<span id="techBossVal">0</span>%</p>
                 </div>
                 <button class="buy-btn" id="btnTechBoss" onclick="upgradeTech('bossSlayer')">10K</button>
@@ -529,6 +587,24 @@
                     <p style="color:var(--essence-color)">Бонус: x<span id="relicGoldVal">1.0</span></p>
                 </div>
                 <button class="buy-btn essence" id="btnRelicGold" onclick="upgradeRelic('goldHorn')">1 💎</button>
+            </div>
+
+            <div class="upgrade-card" style="border:1px solid var(--essence-color)">
+                <div class="upgrade-info">
+                    <h4>📘 Книга Мудрости</h4>
+                    <p>Увеличивает получаемый Опыт</p>
+                    <p style="color:var(--essence-color)">Бонус: x<span id="relicXpVal">1.0</span></p>
+                </div>
+                <button class="buy-btn essence" id="btnRelicXp" onclick="upgradeRelic('wisdomOrb')">2 💎</button>
+            </div>
+
+            <div class="upgrade-card" style="border:1px solid var(--essence-color)">
+                <div class="upgrade-info">
+                    <h4>🔮 Призма Души</h4>
+                    <p>Шанс на доп. Эссенцию</p>
+                    <p style="color:var(--essence-color)">Шанс: <span id="relicSoulVal">0</span>%</p>
+                </div>
+                <button class="buy-btn essence" id="btnRelicSoul" onclick="upgradeRelic('soulPrism')">5 💎</button>
             </div>
 
             <div class="upgrade-card" style="border:1px solid var(--essence-color)">
@@ -562,7 +638,9 @@
                 damage: 1,
                 critChance: 0,
                 critMulti: 2.0,
-                goldBonus: 0
+                goldBonus: 0,
+                doubleStrike: 0, // NEW: Chance for x2 hit
+                luckyStrike: 0   // NEW: Chance for x2 gold
             },
 
             allies: {
@@ -578,20 +656,29 @@
             workshop: {
                 archerBoost: { level: 0, multi: 0.2, cost: 1000 },
                 mageBoost: { level: 0, multi: 0.2, cost: 5000 },
+                knightBoost: { level: 0, multi: 0.2, cost: 20000 }, // NEW
+                warlockBoost: { level: 0, multi: 0.2, cost: 100000 }, // NEW
+                titanBoost: { level: 0, multi: 0.2, cost: 500000 }, // NEW
+                angelBoost: { level: 0, multi: 0.2, cost: 2000000 }, // NEW
+                zeusBoost: { level: 0, multi: 0.2, cost: 100000000 }, // NEW
                 bossSlayer: { level: 0, multi: 0.1, cost: 10000 }
             },
 
             relics: {
                 titanSword: { level: 0, multi: 0.1, cost: 1 },
                 goldHorn: { level: 0, multi: 0.1, cost: 1 },
-                fatalStrike: { level: 0, chance: 1, cost: 5 }
+                fatalStrike: { level: 0, chance: 1, cost: 5 },
+                wisdomOrb: { level: 0, multi: 0.1, cost: 2 }, // NEW: +XP
+                soulPrism: { level: 0, chance: 1, cost: 5 }   // NEW: +Essence Chance
             },
 
             costs: {
                 damage: 10,
                 crit: 50,
                 ferocity: 200,
-                greed: 500
+                greed: 500,
+                doubleStrike: 2000,
+                luckyStrike: 3000
             },
 
             monster: { hp: 20, maxHp: 20, type: 0, prefix: 0, isBoss: false }
@@ -608,15 +695,15 @@
 
         // === СОХРАНЕНИЯ ===
         function initGame() {
-            // Используем новый ключ для версий 7.2, но подгружаем данные 7.1
-            tg.CloudStorage.getItem('rpg_save_v7_2_final', (err, value) => {
+            tg.CloudStorage.getItem('rpg_save_v8_mega', (err, value) => {
                 if (!err && value) {
                     try {
                         const parsed = JSON.parse(value);
                         mergeData(game, parsed);
                     } catch (e) { console.error(e); }
                 } else {
-                    const oldSave = localStorage.getItem('rpg_save_v7_1_army') || localStorage.getItem('rpg_save_v7_relics');
+                    // Обратная совместимость
+                    const oldSave = localStorage.getItem('rpg_save_v7_2_final') || localStorage.getItem('rpg_save_v7_1_army');
                     if (oldSave) {
                         try {
                             const parsedOld = JSON.parse(oldSave);
@@ -643,8 +730,8 @@
         function saveGame() {
             if (isCloudLoading) return;
             const dataStr = JSON.stringify(game);
-            localStorage.setItem('rpg_save_v7_2_final', dataStr);
-            tg.CloudStorage.setItem('rpg_save_v7_2_final', dataStr, (err, stored) => {
+            localStorage.setItem('rpg_save_v8_mega', dataStr);
+            tg.CloudStorage.setItem('rpg_save_v8_mega', dataStr, (err, stored) => {
                 if (!err && stored) showSaveStatus();
             });
         }
@@ -655,7 +742,7 @@
             setTimeout(() => el.style.opacity = 0, 2000);
         }
 
-        setInterval(saveGame, 60000); // Автосейв раз в минуту
+        setInterval(saveGame, 60000);
 
         // === РАСЧЕТЫ БОНУСОВ ===
 
@@ -667,12 +754,19 @@
             return 1 + (game.relics.goldHorn.level * game.relics.goldHorn.multi);
         }
 
+        function getGlobalXpMulti() {
+            return 1 + (game.relics.wisdomOrb.level * game.relics.wisdomOrb.multi);
+        }
+
         function getAllyDps(type) {
             const ally = game.allies[type];
             let dps = ally.lvl * ally.dpsBase;
 
-            if (type === 'archer') dps *= (1 + (game.workshop.archerBoost.level * game.workshop.archerBoost.multi));
-            if (type === 'mage') dps *= (1 + (game.workshop.mageBoost.level * game.workshop.mageBoost.multi));
+            // Проверка улучшений мастерской (Динамическая)
+            const techKey = type + 'Boost';
+            if (game.workshop[techKey]) {
+                dps *= (1 + (game.workshop[techKey].level * game.workshop[techKey].multi));
+            }
 
             dps *= getGlobalDamageMulti();
             return dps;
@@ -710,7 +804,14 @@
             let damage = getHeroClickDamage();
             let isCrit = Math.random() * 100 < game.stats.critChance;
             let isFatal = false;
+            let isDouble = false;
 
+            // Double Strike logic
+            if (Math.random() * 100 < game.stats.doubleStrike) {
+                isDouble = true;
+            }
+
+            // Fatal logic
             if (!isCrit) {
                  if (Math.random() * 100 < (game.relics.fatalStrike.level * game.relics.fatalStrike.chance)) {
                      damage *= 10;
@@ -727,7 +828,15 @@
             if (isFatal) tg.HapticFeedback.notificationOccurred('warning');
             else tg.HapticFeedback.impactOccurred(isCrit ? 'medium' : 'light');
 
+            // Наносим урон
             dealDamage(damage, true, isCrit, x, y, isFatal);
+
+            // Если двойной удар
+            if (isDouble && game.monster.hp > 0) {
+                setTimeout(() => {
+                    dealDamage(damage, true, isCrit, x + 20, y - 20, isFatal);
+                }, 100);
+            }
         }
 
         function dealDamage(amount, isClick, isCrit, x, y, isFatal) {
@@ -738,7 +847,7 @@
                 if (isCrit) type = 'crit';
                 if (isFatal) type = 'essence-text';
 
-                let text = formatNumber(Math.floor(amount)); // Форматируем число урона (k, M)
+                let text = formatNumber(Math.floor(amount));
                 if (isFatal) text = "☠️ " + text;
 
                 showFloatingText(x, y, text, type);
@@ -759,20 +868,38 @@
             if (game.monster.isBoss) baseGold *= 10;
 
             let bonusMulti = (1 + (game.stats.goldBonus / 100)) * getGlobalGoldMulti();
+
+            // Lucky Strike (x2 Gold)
+            let isLucky = (Math.random() * 100 < game.stats.luckyStrike);
+            if (isLucky) bonusMulti *= 2;
+
             let finalGold = Math.floor(baseGold * bonusMulti);
             game.gold += finalGold;
 
+            // Эссенция
             let essenceDrop = 0;
             if (game.monster.isBoss) {
                 essenceDrop = 1;
                 if (game.stage % 10 === 0) essenceDrop += 1;
+
+                // Soul Prism Relic
+                if (Math.random() * 100 < (game.relics.soulPrism.level * game.relics.soulPrism.chance)) {
+                    essenceDrop += 1;
+                }
+
                 game.essence += essenceDrop;
             }
 
-            let xpReward = 15 + (game.stage * 3);
-            gainXp(xpReward);
+            // Опыт
+            let xpReward = (15 + (game.stage * 3)) * getGlobalXpMulti();
+            gainXp(Math.floor(xpReward));
 
-            showFloatingText(window.innerWidth / 2, window.innerHeight / 2 - 100, `+${formatNumber(finalGold)}💰`, 'reward');
+            // Визуал
+            let goldText = `+${formatNumber(finalGold)}💰`;
+            if (isLucky) goldText = "🍀 " + goldText;
+
+            showFloatingText(window.innerWidth / 2, window.innerHeight / 2 - 100, goldText, 'reward');
+
             if (essenceDrop > 0) {
                  setTimeout(() => {
                     showFloatingText(window.innerWidth / 2, window.innerHeight / 2 - 140, `+${essenceDrop}💎`, 'essence-text');
@@ -789,8 +916,6 @@
                     if (game.stage === game.maxStage) game.maxStage++;
                     game.stage++;
                     game.killsInStage = 0;
-
-                    // СОХРАНЕНИЕ ПОСЛЕ БОССА (Стадия сохраняется!)
                     saveGame();
                 } else {
                     game.killsInStage++;
@@ -843,7 +968,6 @@
                 game.stage = newStage;
                 game.killsInStage = 0;
                 spawnMonster(true);
-                // Сохраняем при смене стадии, чтобы не потерять позицию
                 saveGame();
                 renderUI();
             }
@@ -875,6 +999,12 @@
                 } else if (type === 'greed') {
                     game.stats.goldBonus += 10;
                     game.costs.greed = Math.floor(game.costs.greed * 1.8);
+                } else if (type === 'doubleStrike') {
+                    game.stats.doubleStrike = Math.min(game.stats.doubleStrike + 5, 50); // Max 50%
+                    game.costs.doubleStrike = Math.floor(game.costs.doubleStrike * 2.0);
+                } else if (type === 'luckyStrike') {
+                    game.stats.luckyStrike = Math.min(game.stats.luckyStrike + 2, 40); // Max 40%
+                    game.costs.luckyStrike = Math.floor(game.costs.luckyStrike * 2.5);
                 }
                 saveAndRender();
             }
@@ -952,7 +1082,6 @@
             document.getElementById('essence').innerText = formatNumber(game.essence);
             document.getElementById('heroLvlText').innerText = `LVL ${game.level}`;
 
-            // Новое отображение урона
             document.getElementById('clickDmgText').innerText = formatNumber(getHeroClickDamage());
             document.getElementById('idleDpsText').innerText = formatNumber(calculateTotalDps());
 
@@ -991,6 +1120,8 @@
             updateBtn('btnBuyCrit', game.costs.crit, game.gold);
             updateBtn('btnBuyFerocity', game.costs.ferocity, game.gold);
             updateBtn('btnBuyGreed', game.costs.greed, game.gold);
+            updateBtn('btnBuyDouble', game.costs.doubleStrike, game.gold);
+            updateBtn('btnBuyLuck', game.costs.luckyStrike, game.gold);
 
             updateBtn('btnBuyArcher', game.allies.archer.cost, game.gold);
             updateBtn('btnBuyMage', game.allies.mage.cost, game.gold);
@@ -1002,10 +1133,17 @@
 
             updateBtn('btnTechArcher', game.workshop.archerBoost.cost, game.gold);
             updateBtn('btnTechMage', game.workshop.mageBoost.cost, game.gold);
+            updateBtn('btnTechKnight', game.workshop.knightBoost.cost, game.gold);
+            updateBtn('btnTechWarlock', game.workshop.warlockBoost.cost, game.gold);
+            updateBtn('btnTechTitan', game.workshop.titanBoost.cost, game.gold);
+            updateBtn('btnTechAngel', game.workshop.angelBoost.cost, game.gold);
+            updateBtn('btnTechZeus', game.workshop.zeusBoost.cost, game.gold);
             updateBtn('btnTechBoss', game.workshop.bossSlayer.cost, game.gold);
 
             updateBtn('btnRelicDmg', game.relics.titanSword.cost, game.essence);
             updateBtn('btnRelicGold', game.relics.goldHorn.cost, game.essence);
+            updateBtn('btnRelicXp', game.relics.wisdomOrb.cost, game.essence);
+            updateBtn('btnRelicSoul', game.relics.soulPrism.cost, game.essence);
             updateBtn('btnRelicFatal', game.relics.fatalStrike.cost, game.essence);
 
             // Text Values
@@ -1013,6 +1151,8 @@
             document.getElementById('critVal').innerText = game.stats.critChance;
             document.getElementById('critMultiVal').innerText = game.stats.critMulti.toFixed(1);
             document.getElementById('greedVal').innerText = game.stats.goldBonus;
+            document.getElementById('doubleStrikeVal').innerText = game.stats.doubleStrike;
+            document.getElementById('luckVal').innerText = game.stats.luckyStrike;
 
             // Allies Texts
             document.getElementById('dpsArcher').innerText = formatNumber(getAllyDps('archer'));
@@ -1030,12 +1170,21 @@
             document.getElementById('dpsZeus').innerText = formatNumber(getAllyDps('zeus'));
             document.getElementById('allyZeusLvl').innerText = game.allies.zeus.lvl;
 
+            // Workshop Texts
             document.getElementById('techArcherVal').innerText = Math.round(game.workshop.archerBoost.level * game.workshop.archerBoost.multi * 100);
             document.getElementById('techMageVal').innerText = Math.round(game.workshop.mageBoost.level * game.workshop.mageBoost.multi * 100);
+            document.getElementById('techKnightVal').innerText = Math.round(game.workshop.knightBoost.level * game.workshop.knightBoost.multi * 100);
+            document.getElementById('techWarlockVal').innerText = Math.round(game.workshop.warlockBoost.level * game.workshop.warlockBoost.multi * 100);
+            document.getElementById('techTitanVal').innerText = Math.round(game.workshop.titanBoost.level * game.workshop.titanBoost.multi * 100);
+            document.getElementById('techAngelVal').innerText = Math.round(game.workshop.angelBoost.level * game.workshop.angelBoost.multi * 100);
+            document.getElementById('techZeusVal').innerText = Math.round(game.workshop.zeusBoost.level * game.workshop.zeusBoost.multi * 100);
             document.getElementById('techBossVal').innerText = Math.round(game.workshop.bossSlayer.level * game.workshop.bossSlayer.multi * 100);
 
+            // Relic Values
             document.getElementById('relicDmgVal').innerText = getGlobalDamageMulti().toFixed(1);
             document.getElementById('relicGoldVal').innerText = getGlobalGoldMulti().toFixed(1);
+            document.getElementById('relicXpVal').innerText = getGlobalXpMulti().toFixed(1);
+            document.getElementById('relicSoulVal').innerText = (game.relics.soulPrism.level * game.relics.soulPrism.chance);
             document.getElementById('relicFatalVal').innerText = (game.relics.fatalStrike.level * game.relics.fatalStrike.chance);
         }
 
