@@ -3,159 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Super Clicker</title>
+    <title>RPG Boss Clicker</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #000000;
-            --card-bg: #1c1c1e;
-            --text-color: #ffffff;
-            --coin-gradient: linear-gradient(145deg, #ffd700, #f39c12);
-            --energy-color: #e74c3c;
-            --accent-color: #3498db;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent: #ff9800;
+            --hp-color: #e74c3c;
+            --xp-color: #3498db;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --boss-border: #f1c40f;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
             overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* Верхняя панель */
-        .header {
-            width: 100%;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            box-sizing: border-box;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-box {
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: #8e8e93;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        /* Счетчик монет */
-        .score-display {
-            margin-top: 40px;
-            font-size: 48px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .score-display img {
-            width: 40px;
-            height: 40px;
-        }
-
-        /* Монета (Кнопка) */
-        .coin-container {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .coin {
-            width: 260px;
-            height: 260px;
-            background: var(--coin-gradient);
-            border-radius: 50%;
-            box-shadow: 0 0 50px rgba(243, 156, 18, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.3);
-            border: 8px solid #b7791f;
-            cursor: pointer;
-            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 100px;
-        }
-
-        .coin:active {
-            transform: scale(0.95);
-        }
-
-        /* Эффект вылетающих цифр */
-        .floater {
+        #saveStatus {
             position: absolute;
-            color: white;
-            font-weight: bold;
-            font-size: 24px;
-            pointer-events: none;
-            animation: floatUp 1s ease-out forwards;
+            top: 70px;
+            right: 15px;
+            font-size: 10px;
+            color: #2ecc71;
+            opacity: 0;
+            transition: opacity 0.5s;
             z-index: 20;
         }
 
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+        /* --- ВЕРХНЯЯ ПАНЕЛЬ --- */
+        .hero-panel {
+            padding: 15px;
+            background: rgba(30, 30, 30, 0.95);
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            position: relative;
         }
 
-        /* Шкала энергии */
-        .energy-container {
-            width: 90%;
+        .hero-info { display: flex; flex-direction: column; }
+        .hero-lvl { color: var(--accent); font-size: 14px; font-weight: bold; }
+        .hero-dps { font-size: 10px; color: #888; }
+        .gold-display { font-size: 18px; color: #f1c40f; font-weight: bold; }
+
+        /* Полоска опыта */
+        .xp-container {
+            height: 6px;
+            width: 100%;
+            background: #111;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        .xp-bar {
+            height: 100%;
+            background: var(--xp-color);
+            width: 0%;
+            transition: width 0.3s;
+            box-shadow: 0 0 10px var(--xp-color);
+        }
+
+        /* --- АРЕНА --- */
+        .arena {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle at center, #2c3e50 0%, #121212 70%);
+        }
+
+        .monster-info {
+            text-align: center;
             margin-bottom: 20px;
         }
 
-        .energy-text {
-            text-align: center;
+        .monster-name {
+            font-size: 20px;
+            font-weight: bold;
             margin-bottom: 5px;
-            font-size: 14px;
-            color: #8e8e93;
+            text-transform: uppercase;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 12px;
+        .boss-badge {
+            color: #f1c40f;
+            border: 1px solid #f1c40f;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: none; /* Включается через JS */
+            margin-bottom: 5px;
+        }
+
+        /* HP Bar */
+        .hp-bar-container {
+            width: 220px;
+            height: 20px;
             background: #333;
-            border-radius: 6px;
+            border-radius: 10px;
             overflow: hidden;
+            border: 2px solid #555;
+            position: relative;
         }
-
-        .progress-fill {
+        .hp-bar {
+            width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, #e74c3c, #f1c40f);
+            background: var(--hp-color);
+            transition: width 0.1s linear;
+        }
+        .hp-text {
+            position: absolute;
             width: 100%;
-            transition: width 0.2s;
+            text-align: center;
+            top: 0;
+            line-height: 20px;
+            font-size: 12px;
+            color: white;
+            text-shadow: 0 0 2px black;
         }
 
-        /* Меню улучшений */
-        .menu {
-            width: 100%;
+        /* Спрайт монстра */
+        .monster-sprite {
+            font-size: 130px;
+            cursor: pointer;
+            transition: transform 0.05s;
+            filter: drop-shadow(0 0 30px rgba(0,0,0,0.5));
+            position: relative;
+            z-index: 5;
+        }
+        .monster-sprite:active { transform: scale(0.92); }
+        .monster-sprite.hit { animation: shake 0.2s; }
+        .monster-sprite.dead { animation: die 0.4s forwards; }
+
+        /* Эффект Босса */
+        .is-boss .monster-sprite { font-size: 160px; filter: drop-shadow(0 0 50px rgba(241, 196, 15, 0.4)); }
+        .is-boss .hp-bar-container { border-color: #f1c40f; box-shadow: 0 0 15px rgba(241, 196, 15, 0.3); }
+
+        /* --- НИЖНЯЯ ПАНЕЛЬ (ТАБЫ) --- */
+        .controls {
             background: var(--card-bg);
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
-            padding: 20px;
-            box-sizing: border-box;
-            max-height: 30vh;
-            overflow-y: auto;
+            max-height: 45vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.6);
+            overflow: hidden;
         }
 
-        .shop-item {
+        .tabs {
+            display: flex;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            color: #777;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-btn.active {
+            color: white;
+            border-bottom: 3px solid var(--accent);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .tab-content {
+            padding: 15px;
+            overflow-y: auto;
+            flex-grow: 1;
+            display: none; /* Скрыто по умолчанию */
+        }
+        .tab-content.active { display: block; }
+
+        /* Карточки улучшений */
+        .upgrade-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -163,86 +204,121 @@
             padding: 12px;
             border-radius: 12px;
             margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-
-        .shop-info h4 { margin: 0; font-size: 16px; }
-        .shop-info p { margin: 4px 0 0; font-size: 12px; color: #888; }
+        .upgrade-info h4 { margin: 0; font-size: 15px; color: white; }
+        .upgrade-info p { margin: 4px 0 0; font-size: 12px; color: var(--text-secondary); }
 
         .buy-btn {
-            background: var(--accent-color);
+            background: #27ae60;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 8px;
+            font-size: 13px;
             font-weight: bold;
-            cursor: pointer;
+            min-width: 80px;
         }
+        .buy-btn:disabled { background: #444; color: #888; opacity: 0.7; }
 
-        .buy-btn:disabled {
-            background: #444;
-            opacity: 0.5;
+        /* Анимации */
+        .damage-text {
+            position: absolute;
+            color: white;
+            font-weight: 900;
+            font-size: 24px;
+            pointer-events: none;
+            animation: floatUp 0.8s ease-out forwards;
+            text-shadow: 2px 2px 0 #000;
+            z-index: 100;
+            white-space: nowrap;
         }
+        .crit { color: #e74c3c; font-size: 32px; z-index: 101; }
+        .reward-text { color: #f1c40f; font-size: 20px; z-index: 102; text-shadow: 0 2px 4px black; }
 
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-80px) scale(1.1); opacity: 0; }
+        }
+        @keyframes shake {
+            0% { transform: translate(0,0) rotate(0); }
+            25% { transform: translate(-5px, 0) rotate(-5deg); }
+            75% { transform: translate(5px, 0) rotate(5deg); }
+            100% { transform: translate(0,0) rotate(0); }
+        }
+        @keyframes die {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="stat-box">
-            <div class="stat-label">Прибыль в сек</div>
-            <div class="stat-value" id="perSec">0</div>
+    <div class="hero-panel">
+        <div class="hero-info">
+            <div class="hero-lvl" id="heroLvlText">LVL 1</div>
+            <div class="hero-dps" id="heroDpsText">0 DPS</div>
         </div>
-        <div class="stat-box">
-            <div class="stat-label">За клик</div>
-            <div class="stat-value" id="perClick">1</div>
+        <div class="gold-display">
+            <span id="gold">0</span> 💰
         </div>
+        <div class="xp-container"><div class="xp-bar" id="xpBar"></div></div>
     </div>
 
-    <div class="score-display">
-        <span id="score">0</span>
-    </div>
+    <div id="saveStatus">💾 Saved</div>
 
-    <div class="coin-container">
-        <div class="coin" id="coinBtn">💰</div>
-    </div>
-
-    <div class="energy-container">
-        <div class="energy-text"><span id="energy">500</span> / <span id="maxEnergy">500</span> ⚡</div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="energyBar"></div>
-        </div>
-    </div>
-
-    <div class="menu">
-        <h3>Улучшения</h3>
-        <div class="shop-item">
-            <div class="shop-info">
-                <h4>Мультитап</h4>
-                <p>+1 за клик</p>
+    <div class="arena" id="arena">
+        <div class="monster-info">
+            <div class="boss-badge" id="bossBadge">☠️ MINI BOSS ☠️</div>
+            <div class="monster-name" id="monsterName">Monster</div>
+            <div class="hp-bar-container">
+                <div class="hp-bar" id="hpBar"></div>
+                <div class="hp-text" id="hpText">10/10</div>
             </div>
-            <button class="buy-btn" id="btnUpgradeClick" onclick="buyUpgrade('click')">
-                100 💰
-            </button>
+        </div>
+        <div class="monster-sprite" id="monster" onpointerdown="attack(event)">👾</div>
+    </div>
+
+    <div class="controls">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('hero')">🦸 Герой</button>
+            <button class="tab-btn" onclick="openTab('allies')">🛡️ Союзники</button>
         </div>
 
-        <div class="shop-item">
-            <div class="shop-info">
-                <h4>Авто-бот</h4>
-                <p>+1 монета в сек</p>
+        <div id="tab-hero" class="tab-content active">
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>⚔️ Сила атаки</h4>
+                    <p>Урон клика: <span id="dmgVal">1</span></p>
+                </div>
+                <button class="buy-btn" id="btnBuyDmg" onclick="upgrade('damage')">10 💰</button>
             </div>
-            <button class="buy-btn" id="btnUpgradeAuto" onclick="buyUpgrade('auto')">
-                200 💰
-            </button>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>🎯 Меткость</h4>
+                    <p>Шанс крита: <span id="critVal">0</span>%</p>
+                </div>
+                <button class="buy-btn" id="btnBuyCrit" onclick="upgrade('crit')">50 💰</button>
+            </div>
         </div>
 
-         <div class="shop-item">
-            <div class="shop-info">
-                <h4>Батарейка</h4>
-                <p>+500 макс. энергии</p>
+        <div id="tab-allies" class="tab-content">
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>🏹 Лучник-новичок</h4>
+                    <p>+5 DPS | Ур. <span id="allyArcherLvl">0</span></p>
+                </div>
+                <button class="buy-btn" id="btnBuyArcher" onclick="upgradeAlly('archer')">100 💰</button>
             </div>
-            <button class="buy-btn" id="btnUpgradeEnergy" onclick="buyUpgrade('energy')">
-                300 💰
-            </button>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h4>🧙 Огненный Маг</h4>
+                    <p>+20 DPS | Ур. <span id="allyMageLvl">0</span></p>
+                </div>
+                <button class="buy-btn" id="btnBuyMage" onclick="upgradeAlly('mage')">500 💰</button>
+            </div>
         </div>
     </div>
 
@@ -250,142 +326,303 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Состояние игры
-        let gameData = {
-            score: 0,
-            clickPower: 1,
-            autoProfit: 0,
-            energy: 500,
-            maxEnergy: 500,
-            costs: {
-                click: 100,
-                auto: 200,
-                energy: 300
-            }
+        // КОНФИГУРАЦИЯ
+        const initialState = {
+            gold: 0,
+            level: 1,
+            xp: 0,
+            xpToNext: 100,
+            stats: { damage: 1, critChance: 0, critMulti: 2.0 },
+            allies: {
+                archer: { lvl: 0, dps: 5, cost: 100 },
+                mage: { lvl: 0, dps: 20, cost: 500 }
+            },
+            costs: { damage: 10, crit: 50 },
+            monster: { hp: 20, maxHp: 20, level: 1, type: 0, isBoss: false }
         };
 
-        // Загрузка
-        const saved = localStorage.getItem('superClickerData');
-        if (saved) {
-            gameData = JSON.parse(saved);
-        }
+        let game = JSON.parse(JSON.stringify(initialState));
+        let isCloudLoading = true;
 
-        // DOM элементы
-        const scoreEl = document.getElementById('score');
-        const energyEl = document.getElementById('energy');
-        const maxEnergyEl = document.getElementById('maxEnergy');
-        const energyBar = document.getElementById('energyBar');
-        const coinBtn = document.getElementById('coinBtn');
+        const monsters = ["👾", "👹", "💀", "👻", "🤖", "🦖", "🧛", "🧟"];
+        const bosses = ["🐲", "🐙", "🦍", "👿"];
+        const monsterNames = ["Слайм", "Гоблин", "Скелет", "Дух", "Робот", "Ящер", "Вампир", "Зомби"];
 
-        // Основная функция отрисовки
-        function updateUI() {
-            scoreEl.innerText = Math.floor(gameData.score).toLocaleString();
-            energyEl.innerText = Math.floor(gameData.energy);
-            maxEnergyEl.innerText = gameData.maxEnergy;
-            document.getElementById('perSec').innerText = gameData.autoProfit;
-            document.getElementById('perClick').innerText = gameData.clickPower;
-
-            // Обновление полоски энергии
-            const percentage = (gameData.energy / gameData.maxEnergy) * 100;
-            energyBar.style.width = percentage + '%';
-
-            // Обновление кнопок магазина
-            updateShopBtn('btnUpgradeClick', gameData.costs.click);
-            updateShopBtn('btnUpgradeAuto', gameData.costs.auto);
-            updateShopBtn('btnUpgradeEnergy', gameData.costs.energy);
-        }
-
-        function updateShopBtn(id, cost) {
-            const btn = document.getElementById(id);
-            btn.innerText = cost + ' 💰';
-            btn.disabled = gameData.score < cost;
-        }
-
-        // Клик по монете
-        coinBtn.addEventListener('pointerdown', (e) => {
-            if (gameData.energy >= gameData.clickPower) {
-                // Логика
-                gameData.score += gameData.clickPower;
-                gameData.energy -= gameData.clickPower;
-
-                // Вибрация
-                tg.HapticFeedback.impactOccurred('medium');
-
-                // Визуальный эффект (+цифра)
-                showFloatingText(e.clientX, e.clientY, '+' + gameData.clickPower);
-
-                // Анимация наклона монеты
-                const rect = coinBtn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                coinBtn.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg) scale(0.95)`;
-                setTimeout(() => {
-                    coinBtn.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-                }, 100);
-
-                updateUI();
-            } else {
-                tg.HapticFeedback.notificationOccurred('error');
-            }
-        });
-
-        // Функция плавающего текста
-        function showFloatingText(x, y, text) {
-            const el = document.createElement('div');
-            el.className = 'floater';
-            el.innerText = text;
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 1000);
-        }
-
-        // Покупка улучшений
-        window.buyUpgrade = function(type) {
-            const cost = gameData.costs[type];
-            if (gameData.score >= cost) {
-                gameData.score -= cost;
-
-                if (type === 'click') {
-                    gameData.clickPower += 1;
-                    gameData.costs.click = Math.floor(cost * 1.5);
-                } else if (type === 'auto') {
-                    gameData.autoProfit += 1;
-                    gameData.costs.auto = Math.floor(cost * 1.4);
-                } else if (type === 'energy') {
-                    gameData.maxEnergy += 500;
-                    gameData.energy = gameData.maxEnergy; // Полное восстановление при покупке
-                    gameData.costs.energy = Math.floor(cost * 1.3);
+        // === СИСТЕМА СОХРАНЕНИЙ ===
+        function initGame() {
+            tg.CloudStorage.getItem('rpg_save_v3', (err, value) => {
+                if (!err && value) {
+                    try {
+                        const parsed = JSON.parse(value);
+                        // Глубокое слияние объектов (чтобы не потерять структуру при обновах)
+                        game = {
+                            ...game,
+                            ...parsed,
+                            stats: { ...game.stats, ...parsed.stats },
+                            allies: { ...game.allies, ...parsed.allies }, // Важно для новых вкладок
+                            costs: { ...game.costs, ...parsed.costs }
+                        };
+                    } catch (e) { console.error(e); }
                 }
-
-                tg.HapticFeedback.notificationOccurred('success');
-                updateUI();
-                saveGame();
-            }
-        };
-
-        // Игровой цикл (каждую секунду)
-        setInterval(() => {
-            // Пассивный доход
-            if (gameData.autoProfit > 0) {
-                gameData.score += gameData.autoProfit;
-            }
-
-            // Восстановление энергии
-            if (gameData.energy < gameData.maxEnergy) {
-                gameData.energy = Math.min(gameData.energy + 3, gameData.maxEnergy);
-            }
-
-            updateUI();
-            saveGame();
-        }, 1000);
+                isCloudLoading = false;
+                renderUI();
+                spawnMonster(false);
+            });
+        }
 
         function saveGame() {
-            localStorage.setItem('superClickerData', JSON.stringify(gameData));
+            if (isCloudLoading) return;
+            const dataStr = JSON.stringify(game);
+            tg.CloudStorage.setItem('rpg_save_v3', dataStr, (err, stored) => {
+                if (!err && stored) showSaveStatus();
+            });
+        }
+
+        function showSaveStatus() {
+            const el = document.getElementById('saveStatus');
+            el.style.opacity = 1;
+            setTimeout(() => el.style.opacity = 0, 2000);
+        }
+
+        setInterval(saveGame, 10000); // Автосейв раз в 10 сек
+
+        // === ИГРОВАЯ ЛОГИКА ===
+
+        // Таймер для урона союзников (DPS)
+        setInterval(() => {
+            if (isCloudLoading) return;
+            const dps = calculateDps();
+            if (dps > 0 && game.monster.hp > 0) {
+                dealDamage(dps / 10, false, false); // Делим на 10, т.к. таймер каждые 100мс
+            }
+        }, 100);
+
+        function calculateDps() {
+            return (game.allies.archer.lvl * 5) + (game.allies.mage.lvl * 20);
+        }
+
+        // Клик игрока
+        function attack(e) {
+            if (isCloudLoading || game.monster.hp <= 0) return;
+
+            let damage = game.stats.damage;
+            let isCrit = Math.random() * 100 < game.stats.critChance;
+
+            if (isCrit) damage = Math.floor(damage * game.stats.critMulti);
+
+            // Вибрация
+            isCrit ? tg.HapticFeedback.notificationOccurred('warning') : tg.HapticFeedback.impactOccurred('light');
+
+            dealDamage(damage, true, isCrit, e.clientX, e.clientY);
+        }
+
+        function dealDamage(amount, isClick, isCrit, x, y) {
+            game.monster.hp -= amount;
+            if (game.monster.hp < 0) game.monster.hp = 0;
+
+            // Визуал только для кликов (чтобы не спамить цифрами от авто-атаки)
+            if (isClick) {
+                showFloatingText(x, y, Math.floor(amount), isCrit ? 'crit' : 'damage');
+                animateMonsterHit();
+            }
+
+            if (game.monster.hp <= 0) killMonster();
+            renderUI();
+        }
+
+        function killMonster() {
+            tg.HapticFeedback.notificationOccurred('success');
+
+            // Расчет награды (Рандом)
+            // База * Уровень * (0.8...1.2)
+            const randomFactor = 0.8 + Math.random() * 0.4;
+            let baseGold = (game.monster.maxHp / 2.5);
+            let baseXp = 15;
+
+            if (game.monster.isBoss) {
+                baseGold *= 5; // Босс дает х5 золота
+                baseXp *= 3;   // Босс дает х3 опыта
+            }
+
+            const goldReward = Math.floor(baseGold * randomFactor);
+            const xpReward = Math.floor(baseXp * randomFactor);
+
+            game.gold += goldReward;
+
+            // Показываем награду в центре экрана
+            showFloatingText(window.innerWidth / 2, window.innerHeight / 2 - 50, `+${goldReward}💰 +${xpReward}XP`, 'reward');
+
+            gainXp(xpReward);
+
+            const m = document.getElementById('monster');
+            m.classList.add('dead');
+
+            setTimeout(() => {
+                m.classList.remove('dead');
+                spawnMonster(true);
+                saveGame();
+            }, 400);
+        }
+
+        function spawnMonster(forceNew) {
+            if (game.monster.hp > 0 && !forceNew) return;
+
+            // Логика уровня монстра
+            game.monster.level = game.level;
+
+            // ПРОВЕРКА НА БОССА (Каждые 5 уровней)
+            const isBoss = (game.level % 5 === 0);
+            game.monster.isBoss = isBoss;
+
+            let baseHp = 20 * Math.pow(1.2, game.monster.level - 1);
+
+            if (isBoss) {
+                baseHp *= 3; // У босса х3 здоровья
+                game.monster.type = Math.floor(Math.random() * bosses.length);
+            } else {
+                game.monster.type = Math.floor(Math.random() * monsters.length);
+            }
+
+            game.monster.maxHp = Math.floor(baseHp);
+            game.monster.hp = game.monster.maxHp;
+
+            renderUI(); // Обновить скин и бейдж
+        }
+
+        function gainXp(amount) {
+            game.xp += amount;
+            if (game.xp >= game.xpToNext) {
+                game.level++;
+                game.xp -= game.xpToNext;
+                game.xpToNext = Math.floor(game.xpToNext * 1.5);
+
+                // Левелап
+                tg.HapticFeedback.notificationOccurred('success');
+                showFloatingText(window.innerWidth / 2, window.innerHeight / 2 - 100, "LEVEL UP!", 'crit');
+
+                // Если мы только что убили обычного монстра и стали босс-уровня, следующий спавн будет боссом
+            }
+        }
+
+        // === МАГАЗИН И ТАБЫ ===
+
+        function openTab(tabName) {
+            // Переключение кнопок
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Переключение контента
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            tg.HapticFeedback.selectionChanged();
+        }
+
+        function upgrade(type) {
+            const cost = game.costs[type];
+            if (game.gold >= cost) {
+                game.gold -= cost;
+                if (type === 'damage') {
+                    game.stats.damage += 1;
+                    game.costs.damage = Math.floor(game.costs.damage * 1.4);
+                } else if (type === 'crit') {
+                    game.stats.critChance += 1;
+                    game.costs.crit = Math.floor(game.costs.crit * 1.6);
+                }
+                saveAndRender();
+            }
+        }
+
+        function upgradeAlly(type) {
+            const ally = game.allies[type];
+            if (game.gold >= ally.cost) {
+                game.gold -= ally.cost;
+                ally.lvl += 1;
+                ally.cost = Math.floor(ally.cost * 1.3); // Цена растет
+                saveAndRender();
+            }
+        }
+
+        function saveAndRender() {
+            tg.HapticFeedback.selectionChanged();
+            renderUI();
+            saveGame();
+        }
+
+        // === ОТРИСОВКА ===
+
+        function showFloatingText(x, y, text, type) {
+            const el = document.createElement('div');
+            el.className = `damage-text ${type === 'crit' ? 'crit' : ''} ${type === 'reward' ? 'reward-text' : ''}`;
+            el.innerText = text;
+
+            // Случайный разброс
+            const rndX = (Math.random() - 0.5) * 60;
+            el.style.left = (x + rndX) + 'px';
+            el.style.top = y + 'px';
+
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 900);
+        }
+
+        function animateMonsterHit() {
+            const m = document.getElementById('monster');
+            m.classList.remove('hit');
+            void m.offsetWidth;
+            m.classList.add('hit');
+        }
+
+        function renderUI() {
+            // Герой
+            document.getElementById('gold').innerText = game.gold;
+            document.getElementById('heroLvlText').innerText = `LVL ${game.level}`;
+            document.getElementById('heroDpsText').innerText = `${calculateDps()} DPS`;
+
+            const xpPct = Math.min(100, (game.xp / game.xpToNext) * 100);
+            document.getElementById('xpBar').style.width = `${xpPct}%`;
+
+            // Монстр
+            const isBoss = game.monster.isBoss;
+            const arena = document.getElementById('arena');
+
+            if (isBoss) {
+                document.getElementById('monster').innerText = bosses[game.monster.type % bosses.length];
+                document.getElementById('monsterName').innerText = "🔥 BOSS 🔥";
+                document.getElementById('bossBadge').style.display = 'inline-block';
+                arena.classList.add('is-boss');
+            } else {
+                document.getElementById('monster').innerText = monsters[game.monster.type];
+                document.getElementById('monsterName').innerText = `${monsterNames[game.monster.type]} (Lvl ${game.monster.level})`;
+                document.getElementById('bossBadge').style.display = 'none';
+                arena.classList.remove('is-boss');
+            }
+
+            const hpPct = Math.max(0, (game.monster.hp / game.monster.maxHp) * 100);
+            document.getElementById('hpBar').style.width = `${hpPct}%`;
+            document.getElementById('hpText').innerText = `${Math.ceil(game.monster.hp)} / ${game.monster.maxHp}`;
+
+            // Магазин (Кнопки)
+            updateBtn('btnBuyDmg', game.costs.damage, game.gold);
+            updateBtn('btnBuyCrit', game.costs.crit, game.gold);
+            updateBtn('btnBuyArcher', game.allies.archer.cost, game.gold);
+            updateBtn('btnBuyMage', game.allies.mage.cost, game.gold);
+
+            // Магазин (Текст)
+            document.getElementById('dmgVal').innerText = game.stats.damage;
+            document.getElementById('critVal').innerText = game.stats.critChance;
+            document.getElementById('allyArcherLvl').innerText = game.allies.archer.lvl;
+            document.getElementById('allyMageLvl').innerText = game.allies.mage.lvl;
+        }
+
+        function updateBtn(id, cost, balance) {
+            const btn = document.getElementById(id);
+            btn.innerText = `${cost} 💰`;
+            btn.disabled = balance < cost;
         }
 
         // Старт
-        updateUI();
+        initGame();
+
     </script>
 </body>
 </html>
