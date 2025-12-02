@@ -25,7 +25,7 @@
             user-select: none;
             -webkit-user-select: none;
             -webkit-tap-highlight-color: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -39,7 +39,7 @@
             overflow: hidden;
         }
 
-        /* === TOP HUD (Heads-Up Display) === */
+        /* === TOP HUD === */
         .hud {
             padding: 10px 16px;
             display: flex;
@@ -66,7 +66,7 @@
             width: 0%; transition: width 0.3s; box-shadow: 0 0 10px var(--primary);
         }
 
-        /* === MAIN ARENA === */
+        /* === ARENA === */
         .arena-container {
             flex-grow: 1;
             display: flex;
@@ -77,20 +77,17 @@
             padding-bottom: 20px;
         }
 
-        /* Monster Info */
         .monster-header { text-align: center; margin-bottom: 15px; }
         .monster-stage { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-sec); margin-bottom: 4px; }
         .monster-name { font-size: 18px; font-weight: 800; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .is-boss .monster-name { color: var(--danger); font-size: 22px; }
 
-        /* HP Bar */
         .hp-container {
             width: 60%; height: 8px; background: #333; border-radius: 4px;
             overflow: hidden; margin-bottom: 20px; position: relative;
         }
         .hp-fill { height: 100%; width: 100%; background: var(--danger); transition: width 0.1s linear; }
 
-        /* Sprite */
         .sprite-wrapper {
             position: relative;
             width: 100%;
@@ -108,7 +105,6 @@
         .sprite.hit { animation: shake 0.15s; }
         .sprite.dead { animation: die 0.3s forwards; }
 
-        /* Navigation Arrows */
         .nav-arrow {
             position: absolute; top: 50%; transform: translateY(-50%);
             font-size: 24px; padding: 20px; color: rgba(255,255,255,0.3);
@@ -118,18 +114,18 @@
         .nav-right { right: 0; }
         .nav-arrow:active { color: white; }
 
-        /* === SCROLLABLE CONTENT (SHEET) === */
+        /* === BOTTOM SHEET === */
         .content-sheet {
             background: var(--bg-panel);
             border-top-left-radius: 24px;
             border-top-right-radius: 24px;
-            height: 45vh; /* Высота панели улучшений */
+            height: 45vh;
             display: flex;
             flex-direction: column;
             box-shadow: 0 -5px 40px rgba(0,0,0,0.5);
             position: relative;
             z-index: 20;
-            padding-bottom: var(--nav-height); /* Space for bottom bar */
+            padding-bottom: var(--nav-height);
         }
 
         .sheet-header {
@@ -147,7 +143,7 @@
             padding: 15px;
         }
 
-        /* === CARDS & LISTS === */
+        /* === CARDS === */
         .list-item {
             display: flex;
             align-items: center;
@@ -186,7 +182,7 @@
         .btn-buy:disabled { background: #2c2c2e; color: #636366; }
         .btn-buy.essence { background: var(--essence); }
 
-        /* === BOTTOM NAVIGATION === */
+        /* === NAV === */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
             height: var(--nav-height);
@@ -197,7 +193,7 @@
             align-items: center;
             border-top: 1px solid rgba(255,255,255,0.05);
             z-index: 100;
-            padding-bottom: 10px; /* Safe area for iPhone */
+            padding-bottom: 10px;
         }
 
         .nav-item {
@@ -210,13 +206,29 @@
         .nav-item.active { color: var(--primary); }
         .nav-item.active .nav-icon { transform: scale(1.1); transition: transform 0.2s; }
 
-        /* GRID for Equipment */
+        /* GRID */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+        .stat-item {
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; padding: 10px; text-align: center;
+        }
+        .stat-val { font-size: 18px; font-weight: 800; margin: 6px 0; color: white; }
+        .btn-stat-up {
+            width: 100%; padding: 4px; background: rgba(255,255,255,0.1);
+            border: none; border-radius: 4px; color: white; font-size: 10px; font-weight: bold;
+        }
+        .stat-desc { font-size: 9px; color: var(--text-sec); margin-top: 4px; }
+
         .equip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .equip-card { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; display: flex; align-items: center; gap: 10px; }
+        .equip-card { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,0.05); }
         .equip-text h4 { margin: 0; font-size: 11px; color: var(--text-sec); }
         .equip-val { font-size: 12px; font-weight: bold; color: white; }
+        .btn-equip-up {
+            background: #27272a; color: white; border: 1px solid #3f3f46;
+            padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; margin-left: auto;
+        }
 
-        /* UTILS & ANIMATIONS */
+        /* ANIMATIONS & UTILS */
         .hidden { display: none !important; }
         .floater { position: absolute; pointer-events: none; font-weight: 900; animation: floatUp 0.8s forwards; z-index: 50; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .f-dmg { color: white; font-size: 24px; }
@@ -234,12 +246,8 @@
     <div class="xp-bar-line" id="xpBar"></div>
 
     <div class="hud">
-        <div class="resource-pill">
-            <span>💰</span> <span id="gold">0</span>
-        </div>
-        <div class="resource-pill" style="border-color: rgba(191,90,242,0.3)">
-            <span>💎</span> <span id="essence">0</span>
-        </div>
+        <div class="resource-pill"><span>💰</span> <span id="gold">0</span></div>
+        <div class="resource-pill" style="border-color: rgba(191,90,242,0.3)"><span>💎</span> <span id="essence">0</span></div>
     </div>
 
     <div class="arena-container">
@@ -251,64 +259,34 @@
             <div class="monster-name" id="monsterName">Loading...</div>
         </div>
 
-        <div class="hp-container">
-            <div class="hp-fill" id="hpBar"></div>
-        </div>
-
-        <div class="sprite-wrapper">
-            <div class="sprite" id="monster" onpointerdown="attack(event)">👾</div>
-        </div>
+        <div class="hp-container"><div class="hp-fill" id="hpBar"></div></div>
+        <div class="sprite-wrapper"><div class="sprite" id="monster" onpointerdown="attack(event)">👾</div></div>
     </div>
 
     <div class="content-sheet">
         <div class="sheet-header">
             <span class="sheet-title" id="tabTitle">Герой</span>
-            <div class="dps-meter">
-                DPS: <span id="totalDps" class="dps-val">0</span>
-            </div>
+            <div class="dps-meter">DPS: <span id="totalDps" class="dps-val">0</span></div>
         </div>
 
         <div id="view-hero" class="scroll-area">
             <div style="text-align:center; margin-bottom:15px;">
                 <h3 style="margin:0">LVL <span id="heroLvl">1</span></h3>
-                <small style="color:#666">Очков характеристик: <span id="spCount" style="color:white">0</span></small>
+                <small style="color:#666">Очков: <span id="spCount" style="color:white">0</span></small>
             </div>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:20px;">
-                <button class="list-item" style="flex-direction:column; gap:5px; padding:8px" onclick="buyAttribute('str')">
-                    <span style="color:var(--danger)">СИЛА</span>
-                    <b id="statStr">0</b>
-                </button>
-                <button class="list-item" style="flex-direction:column; gap:5px; padding:8px" onclick="buyAttribute('agi')">
-                    <span style="color:var(--primary)">ЛОВК</span>
-                    <b id="statAgi">0</b>
-                </button>
-                <button class="list-item" style="flex-direction:column; gap:5px; padding:8px" onclick="buyAttribute('luk')">
-                    <span style="color:var(--accent)">УДАЧА</span>
-                    <b id="statLuk">0</b>
-                </button>
+            <div class="stats-grid">
+                <div class="stat-item"><div style="font-size:10px; color:var(--danger)">СИЛА</div><div class="stat-val" id="statStr">0</div><button class="btn-stat-up" onclick="buyAttribute('str')">+1</button><div class="stat-desc">+1% Dmg</div></div>
+                <div class="stat-item"><div style="font-size:10px; color:var(--primary)">ЛОВК</div><div class="stat-val" id="statAgi">0</div><button class="btn-stat-up" onclick="buyAttribute('agi')">+1</button><div class="stat-desc">+0.5% Crit</div></div>
+                <div class="stat-item"><div style="font-size:10px; color:#fbbf24">УДАЧА</div><div class="stat-val" id="statLuk">0</div><button class="btn-stat-up" onclick="buyAttribute('luk')">+1</button><div class="stat-desc">+1% Gold</div></div>
             </div>
-
-            <h4 style="margin:10px 0; color:#666">ЭКИПИРОВКА</h4>
-            <div class="equip-grid" id="equipList">
-                </div>
+            <div style="margin-bottom:10px; font-weight:700; font-size:12px; color:var(--text-sec);">ЭКИПИРОВКА</div>
+            <div class="equip-grid" id="equipList"></div>
         </div>
 
-        <div id="view-skills" class="scroll-area hidden">
-            <div id="skillsList"></div>
-        </div>
-
-        <div id="view-army" class="scroll-area hidden">
-            <div id="alliesList"></div>
-        </div>
-
-        <div id="view-workshop" class="scroll-area hidden">
-            <div id="workshopList"></div>
-        </div>
-
-        <div id="view-relics" class="scroll-area hidden">
-            <div id="relicsList"></div>
-        </div>
+        <div id="view-skills" class="scroll-area hidden"><div id="skillsList"></div></div>
+        <div id="view-army" class="scroll-area hidden"><div id="alliesList"></div></div>
+        <div id="view-workshop" class="scroll-area hidden"><div id="workshopList"></div></div>
+        <div id="view-relics" class="scroll-area hidden"><div id="relicsList"></div></div>
 
         <div id="view-settings" class="scroll-area hidden">
             <div class="list-item" style="flex-direction:column; align-items:stretch">
@@ -319,38 +297,17 @@
                 </div>
                 <p id="promoStatus" style="font-size:11px; margin:5px 0 0 0"></p>
             </div>
-            <button class="list-item" style="width:100%; justify-content:center; color:var(--danger)" onclick="resetProgress()">
-                Сброс прогресса
-            </button>
+            <button class="list-item" style="width:100%; justify-content:center; color:var(--danger)" onclick="resetProgress()">Сброс прогресса</button>
         </div>
-
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchView('hero', this)">
-            <span class="nav-icon">🦸</span>
-            <span>Герой</span>
-        </div>
-        <div class="nav-item" onclick="switchView('skills', this)">
-            <span class="nav-icon">⚡</span>
-            <span>Навыки</span>
-        </div>
-        <div class="nav-item" onclick="switchView('army', this)">
-            <span class="nav-icon">⚔️</span>
-            <span>Армия</span>
-        </div>
-        <div class="nav-item" onclick="switchView('workshop', this)">
-            <span class="nav-icon">🔨</span>
-            <span>Цех</span>
-        </div>
-        <div class="nav-item" onclick="switchView('relics', this)">
-            <span class="nav-icon">🔮</span>
-            <span>Релик</span>
-        </div>
-        <div class="nav-item" onclick="switchView('settings', this)">
-            <span class="nav-icon">⚙️</span>
-            <span>Меню</span>
-        </div>
+        <div class="nav-item active" onclick="switchView('hero', this)"><span class="nav-icon">🦸</span><span>Герой</span></div>
+        <div class="nav-item" onclick="switchView('skills', this)"><span class="nav-icon">⚡</span><span>Навыки</span></div>
+        <div class="nav-item" onclick="switchView('army', this)"><span class="nav-icon">⚔️</span><span>Армия</span></div>
+        <div class="nav-item" onclick="switchView('workshop', this)"><span class="nav-icon">🔨</span><span>Цех</span></div>
+        <div class="nav-item" onclick="switchView('relics', this)"><span class="nav-icon">🔮</span><span>Релик</span></div>
+        <div class="nav-item" onclick="switchView('settings', this)"><span class="nav-icon">⚙️</span><span>Меню</span></div>
     </div>
 
     <script>
@@ -365,7 +322,7 @@
             equipment: { head: 0, chest: 0, legs: 0, boots: 0, weapon: 0, shield: 0 },
             stats: { damage: 1, critChance: 0, critMulti: 2.0, goldBonus: 0, doubleStrike: 0, luckyStrike: 0 },
 
-            // Added ICONS here
+            // Defining ICONS for Safe Merge
             allies: {
                 archer: { lvl: 0, dpsBase: 5, cost: 100, name: "Лучник", icon: "🏹" },
                 mage: { lvl: 0, dpsBase: 25, cost: 600, name: "Маг Огня", icon: "🔥" },
@@ -392,7 +349,6 @@
                 wisdomOrb: { level: 0, multi: 0.1, cost: 2, name: "Книга Мудрости", icon: "📘" },
                 soulPrism: { level: 0, chance: 1, cost: 5, name: "Призма Души", icon: "💎" }
             },
-            // Added Icons for Skills manually in render
             costs: { damage: 10, crit: 50, ferocity: 200, greed: 500, doubleStrike: 2000, luckyStrike: 3000 },
             monster: { hp: 20, maxHp: 20, type: 0, prefix: 0, isBoss: false }
         };
@@ -418,70 +374,68 @@
         const monsterEmojis = ["👾", "👺", "💀", "👻", "👹", "🐺", "🧛", "🧟"];
         const bossEmojis = ["🐲", "🐙", "👿", "🗿", "🧙‍♂️", "🦍"];
 
-        // === CORE ===
-        function initGame() {
-            tg.CloudStorage.getItem('rpg_save_v10_ui', (err, value) => {
-                if (!err && value) { try { mergeData(game, JSON.parse(value)); } catch (e) {} }
-                else {
-                    const old = localStorage.getItem('rpg_save_v9_equip');
-                    if (old) try { mergeData(game, JSON.parse(old)); } catch (e) {}
+        // === SAFE MERGE FUNCTION (Fixes the icon bug) ===
+        function safeMerge(target, source) {
+            if (!source) return target;
+            for (const key of Object.keys(target)) {
+                if (source[key] !== undefined) {
+                    if (typeof target[key] === 'object' && target[key] !== null && !Array.isArray(target[key])) {
+                        safeMerge(target[key], source[key]);
+                    } else {
+                        target[key] = source[key];
+                    }
                 }
-                const codes = localStorage.getItem('rpg_used_codes');
-                if(codes) usedCodes = JSON.parse(codes);
-
-                isCloudLoading = false;
-                renderStaticLists();
-                renderUI();
-                spawnMonster(false);
-            });
+            }
+            return target;
         }
 
-        function mergeData(target, source) {
-            for (const key in source) {
-                if (source[key] instanceof Object && key in target) Object.assign(source[key], mergeData(target[key], source[key]));
+        function initGame() {
+            try {
+                tg.CloudStorage.getItem('rpg_save_v10_final_fix', (err, value) => {
+                    if (!err && value) {
+                        safeMerge(game, JSON.parse(value));
+                    } else {
+                        // Attempt to load ANY old save, but merge it SAFELY
+                        const oldKeys = ['rpg_save_v10_ui', 'rpg_save_v9_equip', 'rpg_save_v8_mega'];
+                        for(let key of oldKeys) {
+                            const old = localStorage.getItem(key);
+                            if(old) { safeMerge(game, JSON.parse(old)); break; }
+                        }
+                    }
+
+                    const codes = localStorage.getItem('rpg_used_codes');
+                    if(codes) usedCodes = JSON.parse(codes);
+
+                    isCloudLoading = false;
+                    renderStaticLists();
+                    renderUI();
+                    spawnMonster(false);
+                });
+            } catch (e) {
+                alert("Ошибка сохранения. Сброс...");
+                localStorage.clear();
+                location.reload();
             }
-            Object.assign(target || {}, source);
-            return target;
         }
 
         function saveGame() {
             if (isCloudLoading) return;
             const dataStr = JSON.stringify(game);
-            localStorage.setItem('rpg_save_v10_ui', dataStr);
-            tg.CloudStorage.setItem('rpg_save_v10_ui', dataStr);
+            localStorage.setItem('rpg_save_v10_final_fix', dataStr);
+            tg.CloudStorage.setItem('rpg_save_v10_final_fix', dataStr);
         }
         setInterval(saveGame, 60000);
 
-        // === UI LOGIC ===
-        function switchView(viewId, btn) {
-            document.querySelectorAll('.scroll-area').forEach(el => el.classList.add('hidden'));
-            document.getElementById('view-'+viewId).classList.remove('hidden');
-
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            btn.classList.add('active');
-
-            // Update title
-            const titles = { hero: "Герой", skills: "Навыки", army: "Армия", workshop: "Мастерская", relics: "Реликвии", settings: "Настройки" };
-            document.getElementById('tabTitle').innerText = titles[viewId];
-        }
-
+        // === RENDERERS ===
         function renderStaticLists() {
-            // 1. Equipment
+            // Equipment
             let eqHtml = '';
             for(let slot in equipConfig) {
-                eqHtml += `
-                <div class="equip-card">
-                    <div class="slot-icon">${equipConfig[slot].icon}</div>
-                    <div style="flex:1">
-                        <div class="equip-text"><h4 id="eqName_${slot}">Нет</h4></div>
-                        <div class="equip-val" id="eqBonus_${slot}">+0%</div>
-                    </div>
-                    <button class="btn-buy" id="btnEq_${slot}" onclick="upgradeEquipment('${slot}')" style="padding:4px 8px; font-size:10px">UP</button>
-                </div>`;
+                eqHtml += `<div class="equip-card"><div class="slot-icon">${equipConfig[slot].icon}</div><div style="flex:1"><div class="equip-text"><h4 id="eqName_${slot}">Нет</h4></div><div class="equip-val" id="eqBonus_${slot}">+0%</div></div><button class="btn-buy" id="btnEq_${slot}" onclick="upgradeEquipment('${slot}')" style="padding:4px 8px; font-size:10px">UP</button></div>`;
             }
             document.getElementById('equipList').innerHTML = eqHtml;
 
-            // 2. Skills (Manual)
+            // Skills
             const skills = [
                 {id:'damage', n:'Атака', i:'⚔️', d:'Урон клика', v:'dmgVal'},
                 {id:'crit', n:'Меткость', i:'🎯', d:'Крит шанс', v:'critVal'},
@@ -492,68 +446,49 @@
             ];
             let skHtml = '';
             skills.forEach(s => {
-                skHtml += `
-                <div class="list-item">
-                    <div class="item-icon">${s.i}</div>
-                    <div class="item-info">
-                        <div class="item-name">${s.n}</div>
-                        <div class="item-meta">${s.d}: <span id="${s.v}" class="highlight">0</span></div>
-                    </div>
-                    <button class="btn-buy" id="btnBuy_${s.id}" onclick="upgrade('${s.id}')">0</button>
-                </div>`;
+                skHtml += `<div class="list-item"><div class="item-icon">${s.i}</div><div class="item-info"><div class="item-name">${s.n}</div><div class="item-meta">${s.d}: <span id="${s.v}" class="highlight">0</span></div></div><button class="btn-buy" id="btnBuy_${s.id}" onclick="upgrade('${s.id}')">0</button></div>`;
             });
             document.getElementById('skillsList').innerHTML = skHtml;
 
-            // 3. Allies
+            // Allies
             let alHtml = '';
             for(let k in game.allies) {
                 const u = game.allies[k];
-                alHtml += `
-                <div class="list-item">
-                    <div class="item-icon">${u.icon}</div>
-                    <div class="item-info">
-                        <div class="item-name">${u.name}</div>
-                        <div class="item-meta">DPS: <span id="dps_${k}">0</span> | Lv: <span id="lvl_${k}">0</span></div>
-                    </div>
-                    <button class="btn-buy" id="btnBuyUnit_${k}" onclick="upgradeAlly('${k}')">0</button>
-                </div>`;
+                // Protection against undefined icons in corrupt saves
+                const icon = u.icon || "❓";
+                alHtml += `<div class="list-item"><div class="item-icon">${icon}</div><div class="item-info"><div class="item-name">${u.name}</div><div class="item-meta">DPS: <span id="dps_${k}">0</span> | Lv: <span id="lvl_${k}">0</span></div></div><button class="btn-buy" id="btnBuyUnit_${k}" onclick="upgradeAlly('${k}')">0</button></div>`;
             }
             document.getElementById('alliesList').innerHTML = alHtml;
 
-            // 4. Workshop
+            // Workshop
             let wsHtml = '';
             for(let k in game.workshop) {
                 const w = game.workshop[k];
-                wsHtml += `
-                <div class="list-item">
-                    <div class="item-icon">${w.icon}</div>
-                    <div class="item-info">
-                        <div class="item-name">${w.name}</div>
-                        <div class="item-meta highlight">Бонус: +<span id="techVal_${k}">0</span>%</div>
-                    </div>
-                    <button class="btn-buy" id="btnBuyTech_${k}" onclick="upgradeTech('${k}')">0</button>
-                </div>`;
+                const icon = w.icon || "🔨";
+                wsHtml += `<div class="list-item"><div class="item-icon">${icon}</div><div class="item-info"><div class="item-name">${w.name}</div><div class="item-meta highlight">Бонус: +<span id="techVal_${k}">0</span>%</div></div><button class="btn-buy" id="btnBuyTech_${k}" onclick="upgradeTech('${k}')">0</button></div>`;
             }
             document.getElementById('workshopList').innerHTML = wsHtml;
 
-            // 5. Relics
+            // Relics
             let rlHtml = '';
             for(let k in game.relics) {
                 const r = game.relics[k];
-                rlHtml += `
-                <div class="list-item" style="border-color:var(--essence)">
-                    <div class="item-icon">${r.icon}</div>
-                    <div class="item-info">
-                        <div class="item-name" style="color:var(--essence)">${r.name}</div>
-                        <div class="item-meta">Эффект: <span id="relicVal_${k}">0</span></div>
-                    </div>
-                    <button class="btn-buy essence" id="btnBuyRelic_${k}" onclick="upgradeRelic('${k}')">0</button>
-                </div>`;
+                const icon = r.icon || "🔮";
+                rlHtml += `<div class="list-item" style="border-color:var(--essence)"><div class="item-icon">${icon}</div><div class="item-info"><div class="item-name" style="color:var(--essence)">${r.name}</div><div class="item-meta">Эффект: <span id="relicVal_${k}">0</span></div></div><button class="btn-buy essence" id="btnBuyRelic_${k}" onclick="upgradeRelic('${k}')">0</button></div>`;
             }
             document.getElementById('relicsList').innerHTML = rlHtml;
         }
 
-        // === LOGIC (Condensed) ===
+        // === LOGIC ===
+        function switchView(viewId, btn) {
+            document.querySelectorAll('.scroll-area').forEach(el => el.classList.add('hidden'));
+            document.getElementById('view-'+viewId).classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            const titles = { hero: "Герой", skills: "Навыки", army: "Армия", workshop: "Мастерская", relics: "Реликвии", settings: "Настройки" };
+            document.getElementById('tabTitle').innerText = titles[viewId];
+        }
+
         function getAttrDmg() { return 1 + (game.attributes.str * 0.01); }
         function getAttrCrit() { return game.attributes.agi * 0.5; }
         function getAttrGold() { return 1 + (game.attributes.luk * 0.01); }
@@ -593,7 +528,6 @@
             return dmg * getGlobalDamageMulti() * eq.click;
         }
 
-        // Loop
         setInterval(() => {
             if (isCloudLoading) return;
             const dps = calculateTotalDps();
@@ -605,7 +539,6 @@
             let damage = getHeroClickDamage();
             let isCrit = Math.random() * 100 < (game.stats.critChance + getAttrCrit() + getEquipBonuses().crit);
             let isFatal = !isCrit && Math.random() * 100 < (game.relics.fatalStrike.level * game.relics.fatalStrike.chance);
-
             if (isFatal) damage *= 10;
             if (isCrit) damage = Math.floor(damage * game.stats.critMulti);
 
@@ -628,7 +561,6 @@
                 let text = formatNumber(Math.floor(amount));
                 if (isFatal) text = "☠️ " + text;
                 showFloatingText(x, y, text, type);
-
                 const s = document.getElementById('monster');
                 s.classList.remove('hit'); void s.offsetWidth; s.classList.add('hit');
             }
@@ -642,7 +574,6 @@
             if (game.monster.isBoss) baseGold *= 10;
             let bonusMulti = (1 + (game.stats.goldBonus / 100)) * getGlobalGoldMulti();
             if (Math.random() * 100 < game.stats.luckyStrike) bonusMulti *= 2;
-
             let finalGold = Math.floor(baseGold * bonusMulti);
             game.gold += finalGold;
 
@@ -699,7 +630,6 @@
             }
         }
 
-        // === ACTIONS ===
         function buyAttribute(attr) {
             if (game.statPoints > 0) { game.statPoints--; game.attributes[attr]++; saveAndRender(); }
         }
@@ -768,6 +698,7 @@
 
         function resetProgress() { if(confirm("Reset?")) { localStorage.clear(); location.reload(); } }
         function saveAndRender() { tg.HapticFeedback.selectionChanged(); renderUI(); saveGame(); }
+
         function formatNumber(num) {
             if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
             if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
@@ -790,8 +721,6 @@
             document.getElementById('statAgi').innerText = game.attributes.agi;
             document.getElementById('statLuk').innerText = game.attributes.luk;
             document.getElementById('spCount').innerText = game.statPoints;
-            document.getElementById('freeSp').innerText = game.statPoints;
-
             const spAlert = document.getElementById('spAlert');
             if(game.statPoints>0) { spAlert.classList.remove('hidden'); document.getElementById('spCount').innerText=game.statPoints; } else spAlert.classList.add('hidden');
 
@@ -825,7 +754,6 @@
             }
             document.getElementById('hpBar').style.width = Math.max(0, (m.hp/m.maxHp)*100)+'%';
 
-            // Lists Update
             const upgBtn = (id, c, e=false) => { const b=document.getElementById(id); if(b) { b.innerText = formatNumber(c)+(e?' 💎':''); b.disabled = e ? game.essence<c : game.gold<c; }};
             const updateTxt = (id, txt) => { const el=document.getElementById(id); if(el) el.innerText=txt; };
 
@@ -851,7 +779,6 @@
                 else updateTxt(`relicVal_${k}`, 'x'+(1+game.relics[k].level*game.relics[k].multi).toFixed(1));
             }
 
-            // Equipment UI Update
             const eq = getEquipBonuses();
             updateTxt('eqBonus_head', `+${Math.round((eq.xp-1)*100)}% XP`);
             updateTxt('eqBonus_chest', `+${Math.round((eq.gold-1)*100)}% Gold`);
@@ -874,6 +801,8 @@
                 }
             }
         }
+
+        initGame();
     </script>
 </body>
 </html>
